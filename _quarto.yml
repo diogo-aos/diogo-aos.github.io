@@ -20,6 +20,5 @@ format:
   html:
     theme: simplex
     css: styles.css
-
-
-
+resources:
+  - CNAME
