@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/index.html</loc>
-    <lastmod>2023-08-28T15:07:21.292Z</lastmod>
+    <loc>https://diogo-aos.github.io/index.html</loc>
+    <lastmod>2023-08-28T18:01:13.281Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog/how-to-get-unique-values-in-an-elm-list/index.html</loc>
-    <lastmod>2023-08-28T15:07:22.504Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog/how-to-get-unique-values-in-an-elm-list/index.html</loc>
+    <lastmod>2023-08-28T18:01:14.517Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog/elm-elm-ui-and-the-building-of-a-dropdown-part-i/index.html</loc>
-    <lastmod>2023-08-28T15:07:23.564Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog/elm-elm-ui-and-the-building-of-a-dropdown-part-i/index.html</loc>
+    <lastmod>2023-08-28T18:01:15.721Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog/2023-08-sorting-faces/index.html</loc>
-    <lastmod>2023-08-28T15:07:24.560Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog/2023-08-sorting-faces/index.html</loc>
+    <lastmod>2023-08-28T18:01:16.613Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog/reusable-dropdown-in-elm-with-parameterized-types-part-ii/index.html</loc>
-    <lastmod>2023-08-28T15:07:25.980Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog/reusable-dropdown-in-elm-with-parameterized-types-part-ii/index.html</loc>
+    <lastmod>2023-08-28T18:01:17.761Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html</loc>
-    <lastmod>2023-08-28T15:07:26.860Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html</loc>
+    <lastmod>2023-08-28T18:01:18.765Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog/display-video-in-a-python-gui-with-dear-pygui/index.html</loc>
-    <lastmod>2023-08-28T15:07:27.828Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog/display-video-in-a-python-gui-with-dear-pygui/index.html</loc>
+    <lastmod>2023-08-28T18:01:19.697Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/blog.html</loc>
-    <lastmod>2023-08-28T15:07:28.812Z</lastmod>
+    <loc>https://diogo-aos.github.io/blog.html</loc>
+    <lastmod>2023-08-28T18:01:20.669Z</lastmod>
   </url>
   <url>
-    <loc>https://diogo-aos.github.io/blog_test/research.html</loc>
-    <lastmod>2023-08-28T15:07:29.120Z</lastmod>
+    <loc>https://diogo-aos.github.io/research.html</loc>
+    <lastmod>2023-08-28T18:01:20.921Z</lastmod>
   </url>
 </urlset>
