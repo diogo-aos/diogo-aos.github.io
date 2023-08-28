@@ -1,7 +1,7 @@
 ---
 title: "Diogo Silva"
 subtitle: Research engineer
-image: profile2.svg
+image: profile.svg
 page-layout: full
 about:
   template: trestles
@@ -9,9 +9,9 @@ about:
     - icon: mastodon
       text: mastodon
       href: https://sigmoid.social/@diogo
-    # - icon: linkedin
-    #   text: LinkedIn
-    #   href: https://www.linkedin.com/in/diogoaos/
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/diogoaos/
     - icon: github
       text: Github
       href: https://github.com/diogo-aos

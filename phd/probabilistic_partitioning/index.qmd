@@ -9,9 +9,11 @@ author:
         city: Sintra
         url: https://academiafa.edu.pt/
 date: "2023-08-25"
+date-modified: "2023-08-28"
 categories: [phd]
 draft: true
 bibliography: references.bib
+#csl: ieee.csl
 abstract: >
   SOTA deep learning models have high performance, but it’s often not possible to apply them to very high resolution images due to memory or latency constraints. We propose a partitioning solution similar to REMIX, where partitions are defined using the uncertainty computed with a first level probabilistic detector. This first level model might be the same second level, with downsized input or a lightweight model. Each partition is then fed to a high or low accuracy model, depending on the objects of interest, or skipped completely.
 
@@ -20,12 +22,30 @@ abstract: >
 
 # Introduction
 
-Traditional models do not model uncertainty and their predictions can be wrong and over-confident.
-Modelling uncertainty becomes ever more important for the use of learning-based algorithms in safety-critical applications, such as medical imaging and autonomous driving.
+Increasingly, artificial neural network (ANN) based models are being developed and applied in safety critical applications.
+Traditional ANNs do not model uncertainty and their predictions can be wrong and over-confident. TODO REF
+[@Hall2018ProbabilisticOD] has reported that conventional object detectors tend to be spatially overconfident.
+Modeling uncertainty becomes ever more important for the use of learning-based algorithms in safety-critical applications, such as medical imaging and autonomous driving.
 Predictive uncertainty estimation studies how to model such uncertainty.
-Different approaches have 
+Bayesian ANN are a class of models that estimate uncertainty. [TODO REF]
 
-[@Hall2018ProbabilisticOD] has reported that concentional object detectors tend to be spatially overconfident 
+Dempster-Shafer theory for reasoning with uncertainty [TODO REF] has been implemented in several models.
+TODO ML models that use this
+A simpler approach to using evidential theory together with ANN was shown by [@NEURIPS2018_a981f2b7], under the nanem Evidential Deep Learning (EDL).
+EDL has also been successfully applied to a variety of different problems, such as classification, detection [TODO REF] and segmentation [@amini2020deep].
+Research has also shown that a pretrained standard ANN can be modified to use evidential theory, and then partially pre-trained to obtain the benefits of uncertainty modeling and estimation, but foregoing the need to train an ANN from scratch [@li2022tedl].
+The same researchers also showed that this 2 step method produces better performance when compared to standard EDL.
+
+
+
+Meanwhile, since conventional object detection models often grow in size with the input image size, very high-res images, such as those found in medical imaging and satellite imagery, make it hard to apply standard detectors.
+Often, the input data is subsampled or downscaled, with the risk of losing or overlooking valuable details in the original data.
+For this reason, specialized models have been developed to account for memory and computation latency constraints [@Bakhtiarnia2022EfficientHD].
+However, less attention has been given to high-resolution specialized object detection models with uncertainty estimation.
+
+We aim to add uncertainty estimation to a good-performing high-resolution object detector. In particular, we will study how to add uncertainty to REMIX [@Jiang2021FlexibleHO], a multistep model for high-resolution object detection. Using what we know about EDL, the standard object detectors used will be swapped for evidential models and we'll also use the uncertainty estimated in an early step to decide which areas of the high-resolution image will be analyzed with higher performance models.
+
+
 
 Related work
 

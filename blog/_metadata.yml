@@ -9,5 +9,5 @@ title-block-banner: true
 
 comments:
   giscus: 
-    repo: diogo-aos/blog_test
+    repo: diogo-aos/diogo-aos.github.io
     category: blog
