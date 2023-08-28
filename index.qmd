@@ -1,7 +1,7 @@
 ---
 title: "Diogo Silva"
 subtitle: Research engineer
-image: profile.png
+image: profile2.svg
 page-layout: full
 about:
   template: trestles
