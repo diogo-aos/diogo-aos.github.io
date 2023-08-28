@@ -1,0 +1,13 @@
+[
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/blog/2023-08-sorting-faces/index.html",
+      "/blog/display-video-in-a-python-gui-with-dear-pygui/index.html",
+      "/blog/reusable-dropdown-in-elm-with-parameterized-types-part-ii/index.html",
+      "/blog/elm-elm-ui-and-the-building-of-a-dropdown-part-i/index.html",
+      "/blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html",
+      "/blog/how-to-get-unique-values-in-an-elm-list/index.html"
+    ]
+  }
+]
