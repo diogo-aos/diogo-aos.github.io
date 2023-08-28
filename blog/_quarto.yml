@@ -1,0 +1,25 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Diogo Silva"
+  navbar:
+    left:
+      - text: blog
+        file: blog.qmd
+      - text: research
+        file: research.qmd
+    right:
+      - icon: github
+        href: https://github.com/diogo-aos
+      - icon: mastodon
+        href: https://sigmoid.social/@diogo
+  open-graph: true
+format:
+  html:
+    theme: simplex
+    css: styles.css
+
+
+

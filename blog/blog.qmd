@@ -1,0 +1,16 @@
+---
+#title: "blog"
+listing:
+  contents: blog
+  sort: "date desc"
+  type: table
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, reading-time]
+  table-hover: true
+  table-striped: false
+page-layout: full
+title-block-banner: true
+
+---

@@ -1,0 +1,8 @@
+---
+#title: Research
+bibliography: references.bib
+nocite: |
+  @Almeida2023ApplicationOD, @Silva2016EfficientEA, @Ribeiro2022TowardsTA, @Flix2023VisionbasedCM
+---
+
+# Publications

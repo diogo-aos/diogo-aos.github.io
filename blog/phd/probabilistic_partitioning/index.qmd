@@ -1,0 +1,43 @@
+---
+title: "Object detection in high resolutions images with probabilistic partitioning"
+author:
+  - name: "Diogo Silva"
+    orcid: 0000-0003-1557-3082
+    email: dasilva@academiafa.edu.pt
+    affiliation:
+      - name: Academia da Força Aérea
+        city: Sintra
+        url: https://academiafa.edu.pt/
+date: "2023-08-25"
+categories: [phd]
+draft: true
+bibliography: references.bib
+abstract: >
+  SOTA deep learning models have high performance, but it’s often not possible to apply them to very high resolution images due to memory or latency constraints. We propose a partitioning solution similar to REMIX, where partitions are defined using the uncertainty computed with a first level probabilistic detector. This first level model might be the same second level, with downsized input or a lightweight model. Each partition is then fed to a high or low accuracy model, depending on the objects of interest, or skipped completely.
+
+---
+
+
+# Introduction
+
+Traditional models do not model uncertainty and their predictions can be wrong and over-confident.
+Modelling uncertainty becomes ever more important for the use of learning-based algorithms in critical applications, such as medical imaging and autonomous driving.
+Predictive uncertainty estimation studies how to model such uncertainty.
+Different approaches have 
+
+[@Hall2018ProbabilisticOD] has reported that concentional object detectors tend to be spatially overconfident 
+
+Related work
+
+REMIX [87] detects pedestrians in high-resolution videos
+within a latency budget given by the user. The input frame
+is partitioned into several blocks, where more salient blocks
+are processed using a computationally expensive but accurate
+network whereas less salient blocks are processed using a
+computationally cheap network or even skipped, as shown
+in Figure 9. REMIX uses historical frames to determine the
+object distribution, and determines the optimal partition using
+a dynamic programming algorithm that takes into account
+the given latency budget, the estimated object distribution, as
+well as the accuracy and speed of available neural networks
+for object detection
