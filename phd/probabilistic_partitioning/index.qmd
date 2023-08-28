@@ -21,7 +21,7 @@ abstract: >
 # Introduction
 
 Traditional models do not model uncertainty and their predictions can be wrong and over-confident.
-Modelling uncertainty becomes ever more important for the use of learning-based algorithms in critical applications, such as medical imaging and autonomous driving.
+Modelling uncertainty becomes ever more important for the use of learning-based algorithms in safety-critical applications, such as medical imaging and autonomous driving.
 Predictive uncertainty estimation studies how to model such uncertainty.
 Different approaches have 
 
