@@ -1,0 +1,49 @@
+---
+title: "The ~~pain~~ of sorting images by faces II"
+author: "Diogo Silva"
+date: "2023-09-03"
+categories: [face-detection,face-recognition,computer-vision]
+draft: false
+#bibliography: references.bib
+---
+
+After playing around further with the clustering parameters of the prototype in [part I](./index.qmd), this only took me so far. To finally be done with this task, I built on what I had in part I and added:
+
+- a strategy to continually break clusters; 
+- a labeling interface and export utility.
+
+---
+
+# Clustering
+
+Defining the appropriate number of clusters is not straightforward.
+Faces are clustered together according to the distance of their embeddings.
+In my case, I used Euclidean distance and single linkage.
+Why single linkage? I wanted to make sure a face joined a cluster if it was similar to any of the cluster's faces, instead of an average of the faces, or even the longest distanced face within the cluster.
+
+Still, the faces of 2 different people might be more similar between them, than either are to detection outliers (e.g. a flower).
+This means a cluster would be created for the flower, and the 2 people would be clustered together if too few clusters are allowed.
+For this reason, the adopted strategy was to start with a small number of clusters and increase it until the biggest cluster was sufficiently small.
+
+I don't love this strategy: it's another parameter to tune, it will be sensitive to the photo collection, and it's hacky. But, in the end, I just wanted _my_ collection grouped by faces, and it managed that. This step has a lot of room for improvement.
+
+# UI
+
+It turns out the UI is one of the most important parts of this mini-project.
+Default settings for the clustering alone can only take the user so far.
+Iterative clustering and labeling are key to quality people recognition.
+Currently, this is accomplished with a hammered CLI for basic interaction and OpenCV GUI for cluster display.
+If I were to continue this project, it would be nice to have a web based interface that managed labels and would allow for more complex operations, such as breaking apart clusters.
+
+---
+
+The whole codebase lives in the [facegroups repository](https://github.com/diogo-aos/facegroups). The process that produced the groups of images I wanted has 3 steps:
+
+1. face detection: explained in [part I](./index.qmd) and implemented in `facegroups/extract.py` (it took around 1h to process ~1000 high resolution images);
+2. face clustering: partly explained part I, uses agglomerative clustering and the strategy mentioned above and is implemented in `facegroups/cluster.py`;
+3. cluster labeling and export tool: basic CLI/GUI tool for a user to label precomputed clusters, implemented in `facegroups/label_clusters.py`.
+
+I'm done with this project for now, but the next steps would be:
+
+1. improving the UI, to allow iterative and interactive clustering and labeling;
+2. improving the clustering and adding logic to suggest cluster merge for the user to validate.

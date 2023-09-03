@@ -1,10 +1,10 @@
 ---
-title: "Quick development of an api wrapper"
+title: "Quick development of an api wrapper | TicketYnabSync"
 author: "Diogo Silva"
 date: "2023-08-29"
 categories: [api, python]
 draft: true
-bibliography: references.bib
+bibliography: refs.bib
 csl: ../../ieee.csl
 
 ---
@@ -87,7 +87,13 @@ balance, T = ticket.update() # get new transactions, or init database if no db e
 print(sorted(T, key=lambda x: x.date)) # sort by date
 ```
 
+The next step to create the sync tool would be to start interacting with the YNAB API. Thankfully, YNAB has an open and well documented API [@ynabapi], so it should be straightforward, and I've done this in the past. But I'll also want to separate the Ticket API logic from the YNAB API logic, from the sync tool. I will be using PyPI package that implements a client for the YNAB API [@ynabapi_client], so this part is already independent. This means I need to create the Ticket API logic in a separate, reusable and easily installable package.
 
-The next step is automating the interaction for creating budget transactions. Thankfully, YNAB has an open and well documented API [@ynabapi], so it should be straightforward.
 
 
+
+
+Codebase:
+
+- [Ticket Ynab Sync repo](https://github.com/diogo-aos/TicketYnacSync)
+- [Ticket API client repo - pyticketfood](https://github.com/diogo-aos/pyticketfood)

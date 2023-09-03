@@ -1,0 +1,36 @@
+---
+title: "Multiobjective optimization of multimodal embedding space for object detection with uncertainty estimation"
+author:
+  - name: "Diogo Silva"
+    orcid: 0000-0003-1557-3082
+    email: dasilva@academiafa.edu.pt
+    affiliation:
+      - name: Academia da Força Aérea
+        city: Sintra
+        url: https://academiafa.edu.pt/
+date: "2023-08-25"
+date-modified: "2023-08-28"
+categories: [phd, idea]
+draft: true
+#bibliography: references.bib
+#csl: ieee.csl
+abstract: >
+  Object detection models frequently use images as input. Autonomous vehicles are increasingly equipped with a wider array of sensors, including range finders, LIDARs, etc., which further increase the size of the available data. Encoding raw input data into embedding space is a frequent strategy to bring the more important details into focus, while discarding low information features. The input size of object detectors influence both performance and speed. We formulate a multiobject optimization problem to find the best embedding space for multimodal data for both performance and speed. The raw input size and embedding space are the variables. Otimization is done across a wide variety of standard encoders and detectors.
+  This strategy allows the user to obtain optimized performance for different latency budgets.
+---
+
+
+**What is the ping of this paper? Optimized embeddings for off-the-shelf pretrained detectors.**
+
+# Introduction
+
+
+
+
+# Look into it
+
+- dataset 
+  - [nuScenes: A Multimodal Dataset for Autonomous Driving](https://openaccess.thecvf.com/content_CVPR_2020/html/Caesar_nuScenes_A_Multimodal_Dataset_for_Autonomous_Driving_CVPR_2020_paper.html)
+  - https://openaccess.thecvf.com/content_CVPR_2020/html/Sun_Scalability_in_Perception_for_Autonomous_Driving_Waymo_Open_Dataset_CVPR_2020_paper.html
+
+

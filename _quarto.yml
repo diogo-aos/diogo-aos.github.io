@@ -9,7 +9,7 @@ website:
       - text: blog
         file: blog.qmd
       - text: research
-        file: research.qmd
+        file: research/index.qmd
     right:
       - icon: github
         href: https://github.com/diogo-aos
