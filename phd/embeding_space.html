@@ -9,7 +9,7 @@
 <meta name="author" content="Diogo Silva">
 <meta name="dcterms.date" content="2023-08-25">
 
-<title>Diogo Silva - Object detection in high resolutions images with probabilistic partitioning</title>
+<title>Diogo Silva - Multiobjective optimization of multimodal embedding space for object detection with uncertainty estimation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,44 +22,25 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -81,9 +62,9 @@ div.csl-indent {
 }</script>
 
 
-<link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Diogo Silva - Object detection in high resolutions images with probabilistic partitioning">
-<meta property="og:description" content="SOTA deep learning models have high performance, but it’s often not possible to apply them to very high resolution images due to memory or latency constraints. We propose a partitioning solution similar to REMIX, where partitions are defined using the uncertainty computed with a first level probabilistic detector. This first level model might be the same second level, with downsized input or a lightweight model. Each partition is then fed to a high or low accuracy model, depending on the objects of interest, or skipped completely.">
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Diogo Silva - Multiobjective optimization of multimodal embedding space for object detection with uncertainty estimation">
+<meta property="og:description" content="Object detection models frequently use images as input. Autonomous vehicles are increasingly equipped with a wider array of sensors, including range finders, LIDARs, etc., which further increase the size of the available data. Encoding raw input data into embedding space is a frequent strategy to bring the more important details into focus, while discarding low information features. The input size of object detectors influence both performance and speed. We formulate a multiobject optimization problem to find the best embedding space for multimodal data for both performance and speed. The raw input size and embedding space are the variables. Otimization is done across a wide variety of standard encoders and detectors. This strategy allows the user to obtain optimized performance for different latency budgets.">
 <meta property="og:image" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta property="og:site-name" content="Diogo Silva">
 </head>
@@ -95,7 +76,7 @@ div.csl-indent {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Diogo Silva</span>
     </a>
   </div>
@@ -106,11 +87,11 @@ div.csl-indent {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html" rel="" target="">
+    <a class="nav-link" href="../blog.html" rel="" target="">
  <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../research.html" rel="" target="">
+    <a class="nav-link" href="../research.html" rel="" target="">
  <span class="menu-text">research</span></a>
   </li>  
 </ul>
@@ -121,7 +102,7 @@ div.csl-indent {
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://sigmoid.social/(diogo?)" rel="" target=""><i class="bi bi-mastodon" role="img">
+    <a class="nav-link" href="https://sigmoid.social/@diogo" rel="" target=""><i class="bi bi-mastodon" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -136,7 +117,7 @@ div.csl-indent {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Object detection in high resolutions images with probabilistic partitioning</h1>
+      <h1 class="title">Multiobjective optimization of multimodal embedding space for object detection with uncertainty estimation</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">phd</div>
                 <div class="quarto-category">idea</div>
@@ -182,7 +163,7 @@ div.csl-indent {
   <div>
     <div class="abstract">
       <div class="abstract-title">Abstract</div>
-      <p>SOTA deep learning models have high performance, but it’s often not possible to apply them to very high resolution images due to memory or latency constraints. We propose a partitioning solution similar to REMIX, where partitions are defined using the uncertainty computed with a first level probabilistic detector. This first level model might be the same second level, with downsized input or a lightweight model. Each partition is then fed to a high or low accuracy model, depending on the objects of interest, or skipped completely.</p>
+      <p>Object detection models frequently use images as input. Autonomous vehicles are increasingly equipped with a wider array of sensors, including range finders, LIDARs, etc., which further increase the size of the available data. Encoding raw input data into embedding space is a frequent strategy to bring the more important details into focus, while discarding low information features. The input size of object detectors influence both performance and speed. We formulate a multiobject optimization problem to find the best embedding space for multimodal data for both performance and speed. The raw input size and embedding space are the variables. Otimization is done across a wide variety of standard encoders and detectors. This strategy allows the user to obtain optimized performance for different latency budgets.</p>
     </div>
   </div>
   
@@ -196,46 +177,24 @@ div.csl-indent {
 
 
 
+<p><strong>What is the ping of this paper? Optimized embeddings for off-the-shelf pretrained detectors.</strong></p>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>Increasingly, artificial neural network (ANN) based models are being developed and applied in safety critical applications. Traditional ANNs do not model uncertainty and their predictions can be wrong and over-confident. TODO REF <span class="citation" data-cites="Hall2018ProbabilisticOD">(<a href="#ref-Hall2018ProbabilisticOD" role="doc-biblioref">Hall et al. 2018</a>)</span> has reported that conventional object detectors tend to be spatially overconfident. Modeling uncertainty becomes ever more important for the use of learning-based algorithms in safety-critical applications, such as medical imaging and autonomous driving. Predictive uncertainty estimation studies how to model such uncertainty. Bayesian ANN are a class of models that estimate uncertainty. [TODO REF]</p>
-<p>Dempster-Shafer theory for reasoning with uncertainty [TODO REF ] has been implemented in several models. TODO ML models that use this theory.</p>
-<p>One such algorithm is the Evidential Deep Learning (EDL) algorithm, which uses Dempster-Shafer theory to model uncertainty in ANN. Another one, the Evidential YOLO (E-YOLO) algorithm, uses evidential theory to model uncertainty in the YOLO object detection algorithm. Both algorithms have been shown to outperform standard ANN and YOLO in terms of uncertainty estimation and detection performance, respectively. Another algorithm that uses this approahc applied to classical ML, is the Evidential Support Vector Machine (E-SVM) <span class="citation" data-cites="amini2020deep">(<a href="#ref-amini2020deep" role="doc-biblioref">Amini et al. 2020</a>)</span>.</p>
-<p>List of ML models that use Dempster-Shafer theory:</p>
+</section>
+<section id="look-into-it" class="level1">
+<h1>Look into it</h1>
 <ul>
-<li>Evidential YOLO (E-YOLO) <span class="citation" data-cites="amini2020deep">(<a href="#ref-amini2020deep" role="doc-biblioref">Amini et al. 2020</a>)</span></li>
-<li>Evidential Support Vector Machine (E-SVM) <span class="citation" data-cites="amini2020deep">(<a href="#ref-amini2020deep" role="doc-biblioref">Amini et al. 2020</a>)</span></li>
+<li>dataset
+<ul>
+<li><a href="https://openaccess.thecvf.com/content_CVPR_2020/html/Caesar_nuScenes_A_Multimodal_Dataset_for_Autonomous_Driving_CVPR_2020_paper.html">nuScenes: A Multimodal Dataset for Autonomous Driving</a></li>
+<li>https://openaccess.thecvf.com/content_CVPR_2020/html/Sun_Scalability_in_Perception_for_Autonomous_Driving_Waymo_Open_Dataset_CVPR_2020_paper.html</li>
+</ul></li>
 </ul>
-<p>A simpler approach to using evidential theory together with ANN was shown by <span class="citation" data-cites="NEURIPS2018_a981f2b7">(<a href="#ref-NEURIPS2018_a981f2b7" role="doc-biblioref">Sensoy, Kaplan, and Kandemir 2018</a>)</span>, under the nanem Evidential Deep Learning (EDL). EDL has also been successfully applied to a variety of different problems, such as classification, detection [TODO REF] and segmentation <span class="citation" data-cites="amini2020deep">(<a href="#ref-amini2020deep" role="doc-biblioref">Amini et al. 2020</a>)</span>. Research has also shown that a pretrained standard ANN can be modified to use evidential theory, and then partially pre-trained to obtain the benefits of uncertainty modeling and estimation, but foregoing the need to train an ANN from scratch <span class="citation" data-cites="li2022tedl">(<a href="#ref-li2022tedl" role="doc-biblioref">Li, Shen, and Charles 2022</a>)</span>. The same researchers also showed that this 2 step method produces better performance when compared to standard EDL.</p>
-<p>Meanwhile, since conventional object detection models often grow in size with the input image size, very high-res images, such as those found in medical imaging and satellite imagery, make it hard to apply standard detectors. Often, the input data is subsampled or downscaled, with the risk of losing or overlooking valuable details in the original data. For this reason, specialized models have been developed to account for memory and computation latency constraints <span class="citation" data-cites="Bakhtiarnia2022EfficientHD">(<a href="#ref-Bakhtiarnia2022EfficientHD" role="doc-biblioref">Bakhtiarnia, Zhang, and Iosifidis 2022</a>)</span>. However, less attention has been given to high-resolution specialized object detection models with uncertainty estimation.</p>
-<p>We aim to add uncertainty estimation to a good-performing high-resolution object detector. In particular, we will study how to add uncertainty to REMIX <span class="citation" data-cites="Jiang2021FlexibleHO">(<a href="#ref-Jiang2021FlexibleHO" role="doc-biblioref">Jiang et al. 2021</a>)</span>, a multistep model for high-resolution object detection. Using what we know about EDL, the standard object detectors used will be swapped for evidential models and we’ll also use the uncertainty estimated in an early step to decide which areas of the high-resolution image will be analyzed with higher performance models.</p>
-<p>Related work</p>
-<p>REMIX [87] detects pedestrians in high-resolution videos within a latency budget given by the user. The input frame is partitioned into several blocks, where more salient blocks are processed using a computationally expensive but accurate network whereas less salient blocks are processed using a computationally cheap network or even skipped, as shown in Figure 9. REMIX uses historical frames to determine the object distribution, and determines the optimal partition using a dynamic programming algorithm that takes into account the given latency budget, the estimated object distribution, as well as the accuracy and speed of available neural networks for object detection</p>
-
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
-<div id="ref-amini2020deep" class="csl-entry" role="listitem">
-Amini, Alexander, Wilko Schwarting, Ava Soleimany, and Daniela Rus. 2020. <span>“Deep Evidential Regression.”</span> <em>Advances in Neural Information Processing Systems</em> 33: 14927–37.
-</div>
-<div id="ref-Bakhtiarnia2022EfficientHD" class="csl-entry" role="listitem">
-Bakhtiarnia, Arian, Qi Zhang, and Alexandros Iosifidis. 2022. <span>“Efficient High-Resolution Deep Learning: A Survey.”</span> <em>ArXiv</em> abs/2207.13050. <a href="https://api.semanticscholar.org/CorpusID:251066965">https://api.semanticscholar.org/CorpusID:251066965</a>.
-</div>
-<div id="ref-Hall2018ProbabilisticOD" class="csl-entry" role="listitem">
-Hall, David, Feras Dayoub, John Skinner, Haoyang Zhang, Dimity Miller, Peter Corke, G. Carneiro, Anelia Angelova, and Niko Sünderhauf. 2018. <span>“Probabilistic Object Detection: Definition and Evaluation.”</span> <em>2020 IEEE Winter Conference on Applications of Computer Vision (WACV)</em>, 1020–29. <a href="https://api.semanticscholar.org/CorpusID:146049697">https://api.semanticscholar.org/CorpusID:146049697</a>.
-</div>
-<div id="ref-Jiang2021FlexibleHO" class="csl-entry" role="listitem">
-Jiang, Shiqi, Zhiqi Lin, Yuanchun Li, Yuanchao Shu, and Yunxin Liu. 2021. <span>“Flexible High-Resolution Object Detection on Edge Devices with Tunable Latency.”</span> <em>Proceedings of the 27th Annual International Conference on Mobile Computing and Networking</em>. <a href="https://api.semanticscholar.org/CorpusID:239029018">https://api.semanticscholar.org/CorpusID:239029018</a>.
-</div>
-<div id="ref-li2022tedl" class="csl-entry" role="listitem">
-Li, Xue, Wei Shen, and Denis Charles. 2022. <span>“TEDL: A Two-Stage Evidential Deep Learning Method for Classification Uncertainty Quantification.”</span> In <em>Proceedings of the Workshop on Deep Learning for Search and Recommendation (DL4SR 2022)</em>. Atlanta, USA: ACM. <a href="https://doi.org/DOI Number">https://doi.org/DOI Number</a>.
-</div>
-<div id="ref-NEURIPS2018_a981f2b7" class="csl-entry" role="listitem">
-Sensoy, Murat, Lance Kaplan, and Melih Kandemir. 2018. <span>“Evidential Deep Learning to Quantify Classification Uncertainty.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by S. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. Cesa-Bianchi, and R. Garnett. Vol. 31. Curran Associates, Inc. <a href="https://proceedings.neurips.cc/paper_files/paper/2018/file/a981f2b708044d6fb4a71a1463242520-Paper.pdf">https://proceedings.neurips.cc/paper_files/paper/2018/file/a981f2b708044d6fb4a71a1463242520-Paper.pdf</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

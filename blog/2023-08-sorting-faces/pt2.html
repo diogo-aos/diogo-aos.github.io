@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Diogo Silva">
-<meta name="dcterms.date" content="2022-02-25">
+<meta name="dcterms.date" content="2023-09-03">
 
-<title>Diogo Silva - Display video in a Python GUI with Dear PyGui</title>
+<title>Diogo Silva - The pain of sorting images by faces II</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -97,12 +63,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="Diogo Silva - Display video in a Python GUI with Dear PyGui">
+<meta property="og:title" content="Diogo Silva - The pain of sorting images by faces II">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://www.diogoaos.com/blog/display-video-in-a-python-gui-with-dear-pygui/Untitled.png">
 <meta property="og:site-name" content="Diogo Silva">
-<meta property="og:image:height" content="864">
-<meta property="og:image:width" content="1596">
 </head>
 
 <body class="nav-fixed fullcontent">
@@ -153,12 +116,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Display video in a Python GUI with Dear PyGui</h1>
+      <h1 class="title">The <del>pain</del> of sorting images by faces II</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">python</div>
-                <div class="quarto-category">gui</div>
-                <div class="quarto-category">dearpygui</div>
-                <div class="quarto-category">video</div>
+                <div class="quarto-category">face-detection</div>
+                <div class="quarto-category">face-recognition</div>
+                <div class="quarto-category">computer-vision</div>
               </div>
                   </div>
   </div>
@@ -176,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">February 25, 2022</p>
+        <p class="date">September 3, 2023</p>
       </div>
     </div>
     
@@ -194,67 +156,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>We’ll cover the ground on how to display frames (from a live UDP video stream) on a GUI using Python. We’ll use av for decoding the video. This will make this work with mostly any video that ffmpeg also supports (which is basically all), but we won’t add logic to ensure the play rate matches the encoded FPS, since this is meant for live video. We’ll use Dear PyGui for the GUI management. Dear PyGui is fast, light on its dependencies and cross-platform.</p>
-<p>Let’s start writing a simple generator for the outputing video frames.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> av</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> sys.argv[<span class="dv">1</span>]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_video(fn):</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    video <span class="op">=</span> av.<span class="bu">open</span>(fn)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    fmt <span class="op">=</span> <span class="st">'rgb24'</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> f <span class="kw">in</span> video.decode():</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        cf <span class="op">=</span> f.to_ndarray(<span class="bu">format</span><span class="op">=</span>fmt)  <span class="co"># convert to rgb</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">yield</span> cf</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    video.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Simple stuff. We’re receiving the path of the video source from an argument. The <code>load_video</code> receives the path for the video source, opens it and starts decoding. Every decoded frame is converted to RGB and yielded from the generator.</p>
-<p>Next, let’s create the GUI.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dearpygui.dearpygui <span class="im">as</span> dpg</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>w,h,d <span class="op">=</span> <span class="dv">1280</span><span class="op">*</span><span class="dv">2</span> ,<span class="dv">720</span><span class="op">*</span><span class="dv">2</span> ,<span class="dv">3</span>  <span class="co"># the width and height values are overdimensioned to fit a wider range of resolutions</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>raw_data <span class="op">=</span> np.zeros((h,w,d), dtype<span class="op">=</span>np.float32)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We’ll use a <em>raw texture</em>, as they are high performance and the preferred method when updating large textures every frame. This is exactly our use case, since Dear PyGui does not have a default video widget (as of version 1.3.1) and we update each frame to the GUI as we receive it.</p>
-<p>In this use case we’ll create a overdimensioned texture to allow frame size to change during the stream. If you know the resolution of the video doesn’t change, you can read them from the first frame and configure the texture afterwards.</p>
-<p>This <code>raw_data</code> array will be the source of data for the GUI. Next, we’ll create the texture repository.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> dpg.texture_registry(show<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    dpg.add_raw_texture(w, h, raw_data, <span class="bu">format</span><span class="op">=</span>dpg.mvFormat_Float_rgb, tag<span class="op">=</span><span class="st">"texture_tag"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We’re predefining the texture format. This is compatible with the format chosen for the conversion happening inside the generator, with the av library. Let’s write the update function.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_dynamic_texture(new_frame):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> raw_data</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    h2, w2, d2 <span class="op">=</span> new_frame.shape</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    raw_data[:h2, :w2] <span class="op">=</span> new_frame[:,:] <span class="op">/</span> <span class="dv">255</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The update function receives the new frame of the video. We’ll get the shape of the new frame, since we’re allowing for it to change over time and be drawn over the same texture. The caveat here is that it must be encoded with the same format (in our case, RGB). The frame received comes with pixels within the interval [0, 255] (8 bits per color channel), but Dear PyGui uses a float in the [0.0, 1.0] range, so we divide the new frame by 255. Let’s create the window.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> dpg.window(label<span class="op">=</span><span class="st">"Video player"</span>):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    dpg.add_image(<span class="st">"texture_tag"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>It’s that easy. This is one of the reasons Dear PyGui is so great. The <code>.window</code> method creates a window and a context in which we can add other items on that same window. In our case, we just added a image element that renders the previously defined texture. Let’s take care of the <em>viewport</em> and setup of the GUI.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dpg.create_viewport(title<span class="op">=</span><span class="st">'Dashboard'</span>, width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">600</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dpg.setup_dearpygui()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>dpg.show_viewport()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Again, very simple stuff. We’re creating a <em>viewport</em> with a standard size. Afterwards, we just do the standard setup and display that <em>viewport</em>. Normally, we would now run <code>start_dearpygui</code> to start the automatic render loop, but we’ll define our own render loop to receive and feed the new frames to the GUI.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>video_gen <span class="op">=</span> load_video(fn)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> f <span class="kw">in</span> video_gen:</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> dpg.is_dearpygui_running():</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        update_dynamic_texture(f)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        dpg.render_dearpygui_frame()</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>  <span class="co"># deal with this scenario appropriately</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>dpg.destroy_context()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>We start by creating the video generator with load_video. Afterwards, we iterate over the video frames from the generator. If the Dear PyGui backend is running, we render the obtained frame. At the end of the script, we destroy the GUI context. I ran the script giving the path to the video source as the first (and only) argument. On my system, the result is the following.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Untitled.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Resulting GUI.</figcaption>
-</figure>
-</div>
-<p>I’m running this program on a Linux host, with the i3 window manager. Dear PyGui created the (resizable) video window inside the view port. This is basically a window inside the program window.</p>
-<p>My test stream has several resolution changes over its duration. The other resolution is smaller then the one displayed above.</p>
-<p>This is it. Very simple. This is not an ideal GUI, but it will get you started.</p>
-<p>With this approach, we need to make sure we have an oversized texture that is bigger than any video resolution we might receive. A possible solution could be to create a new window and texture anytime a new resolution comes along and render the new frame on the texture for its resolution. Or, anytime a bigger resolution comes along, simply replace the old one with a bigger one that fits the new resolution.</p>
-<p>We could also set the video window as primary, and it basically mean the viewport window and the video window are the same, i.e.&nbsp;no window inside window. All other windows would be rendered above the video.</p>
+<p>After playing around further with the clustering parameters of the prototype in <a href="../../blog/2023-08-sorting-faces/index.html">part I</a>, this only took me so far. To finally be done with this task, I built on what I had in part I and added:</p>
+<ul>
+<li>a strategy to continually break clusters;</li>
+<li>a labeling interface and export utility.</li>
+</ul>
+<hr>
+<section id="clustering" class="level1">
+<h1>Clustering</h1>
+<p>Defining the appropriate number of clusters is not straightforward. Faces are clustered together according to the distance of their embeddings. In my case, I used Euclidean distance and single linkage. Why single linkage? I wanted to make sure a face joined a cluster if it was similar to any of the cluster’s faces, instead of an average of the faces, or even the longest distanced face within the cluster.</p>
+<p>Still, the faces of 2 different people might be more similar between them, than either are to detection outliers (e.g.&nbsp;a flower). This means a cluster would be created for the flower, and the 2 people would be clustered together if too few clusters are allowed. For this reason, the adopted strategy was to start with a small number of clusters and increase it until the biggest cluster was sufficiently small.</p>
+<p>I don’t love this strategy: it’s another parameter to tune, it will be sensitive to the photo collection, and it’s hacky. But, in the end, I just wanted <em>my</em> collection grouped by faces, and it managed that. This step has a lot of room for improvement.</p>
+</section>
+<section id="ui" class="level1">
+<h1>UI</h1>
+<p>It turns out the UI is one of the most important parts of this mini-project. Default settings for the clustering alone can only take the user so far. Iterative clustering and labeling are key to quality people recognition. Currently, this is accomplished with a hammered CLI for basic interaction and OpenCV GUI for cluster display. If I were to continue this project, it would be nice to have a web based interface that managed labels and would allow for more complex operations, such as breaking apart clusters.</p>
+<hr>
+<p>The whole codebase lives in the <a href="https://github.com/diogo-aos/facegroups">facegroups repository</a>. The process that produced the groups of images I wanted has 3 steps:</p>
+<ol type="1">
+<li>face detection: explained in <a href="../../blog/2023-08-sorting-faces/index.html">part I</a> and implemented in <code>facegroups/extract.py</code> (it took around 1h to process ~1000 high resolution images);</li>
+<li>face clustering: partly explained part I, uses agglomerative clustering and the strategy mentioned above and is implemented in <code>facegroups/cluster.py</code>;</li>
+<li>cluster labeling and export tool: basic CLI/GUI tool for a user to label precomputed clusters, implemented in <code>facegroups/label_clusters.py</code>.</li>
+</ol>
+<p>I’m done with this project for now, but the next steps would be:</p>
+<ol type="1">
+<li>improving the UI, to allow iterative and interactive clustering and labeling;</li>
+<li>improving the clustering and adding logic to suggest cluster merge for the user to validate.</li>
+</ol>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

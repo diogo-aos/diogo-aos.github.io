@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Diogo Silva – blog</title>
+<title>Diogo Silva – index</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +20,44 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -60,50 +77,19 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Diogo Silva</span>
     </a>
   </div>
@@ -114,11 +100,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../blog.html" rel="" target="">
  <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./research/index.html" rel="" target="">
+    <a class="nav-link active" href="../research/index.html" rel="" target="" aria-current="page">
  <span class="menu-text">research</span></a>
   </li>  
 </ul>
@@ -129,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://sigmoid.social/@diogo" rel="" target=""><i class="bi bi-mastodon" role="img">
+    <a class="nav-link" href="https://sigmoid.social/(diogo?)" rel="" target=""><i class="bi bi-mastodon" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -141,129 +127,36 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="algebraic-datatypes">algebraic-datatypes <span class="quarto-category-count">(1)</span></div><div class="category" data-category="computer-vision">computer-vision <span class="quarto-category-count">(2)</span></div><div class="category" data-category="dearpygui">dearpygui <span class="quarto-category-count">(1)</span></div><div class="category" data-category="elm">elm <span class="quarto-category-count">(3)</span></div><div class="category" data-category="elm-ui">elm-ui <span class="quarto-category-count">(2)</span></div><div class="category" data-category="face-detection">face-detection <span class="quarto-category-count">(2)</span></div><div class="category" data-category="face-recognition">face-recognition <span class="quarto-category-count">(2)</span></div><div class="category" data-category="functional-programming">functional-programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="gui">gui <span class="quarto-category-count">(1)</span></div><div class="category" data-category="python">python <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ssh">ssh <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tunnel">tunnel <span class="quarto-category-count">(1)</span></div><div class="category" data-category="video">video <span class="quarto-category-count">(1)</span></div></div></div>
+    
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+<section id="publications" class="level1">
 
 
 
 
+</section>
 
-
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-
-<table class="quarto-listing-table table table-hover">
-<thead>
-<tr>
-<th>
-Date
-</th>
-<th>
-Title
-</th>
-<th>
-Reading Time
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="face-detection,face-recognition,computer-vision" data-listing-date-sort="1693695600000" data-listing-file-modified-sort="1693751624519" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-title-sort="The ~~pain~~ of sorting images by faces II" data-listing-filename-sort="pt2.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Sep 3, 2023</span>
-</td>
-<td>
-<a href="./blog/2023-08-sorting-faces/pt2.html" class="title listing-title">The <del>pain</del> of sorting images by faces II</a>
-</td>
-<td>
-<span class="listing-reading-time">3 min</span>
-</td>
-</tr>
-<tr data-index="1" data-categories="face-detection,face-recognition,computer-vision" data-listing-date-sort="1692918000000" data-listing-file-modified-sort="1693232304105" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-title-sort="The ~~pain~~ of sorting images by faces I" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Aug 25, 2023</span>
-</td>
-<td>
-<a href="./blog/2023-08-sorting-faces/index.html" class="title listing-title">The <del>pain</del> of sorting images by faces I</a>
-</td>
-<td>
-<span class="listing-reading-time">4 min</span>
-</td>
-</tr>
-<tr data-index="2" data-categories="python,gui,dearpygui,video" data-listing-date-sort="1645747200000" data-listing-file-modified-sort="1693230638434" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-title-sort="Display video in a Python GUI with Dear PyGui" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Feb 25, 2022</span>
-</td>
-<td>
-<a href="./blog/display-video-in-a-python-gui-with-dear-pygui/index.html" class="title listing-title">Display video in a Python GUI with Dear PyGui</a>
-</td>
-<td>
-<span class="listing-reading-time">5 min</span>
-</td>
-</tr>
-<tr data-index="3" data-categories="elm,elm-ui,algebraic-datatypes" data-listing-date-sort="1622070000000" data-listing-file-modified-sort="1693230638438" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="27" data-listing-title-sort="Reusable dropdown in Elm with parameterized types — part II" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">May 27, 2021</span>
-</td>
-<td>
-<a href="./blog/reusable-dropdown-in-elm-with-parameterized-types-part-ii/index.html" class="title listing-title">Reusable dropdown in Elm with parameterized types — part II</a>
-</td>
-<td>
-<span class="listing-reading-time">27 min</span>
-</td>
-</tr>
-<tr data-index="4" data-categories="elm,elm-ui" data-listing-date-sort="1619478000000" data-listing-file-modified-sort="1693230638438" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-title-sort="Elm, elm-ui and the building of a dropdown — Part I" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Apr 27, 2021</span>
-</td>
-<td>
-<a href="./blog/elm-elm-ui-and-the-building-of-a-dropdown-part-i/index.html" class="title listing-title">Elm, elm-ui and the building of a dropdown — Part I</a>
-</td>
-<td>
-<span class="listing-reading-time">14 min</span>
-</td>
-</tr>
-<tr data-index="5" data-categories="ssh,tunnel" data-listing-date-sort="1616803200000" data-listing-file-modified-sort="1693230638430" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-title-sort="Bypass firewalls and routers with reverse tunnels" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Mar 27, 2021</span>
-</td>
-<td>
-<a href="./blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html" class="title listing-title">Bypass firewalls and routers with reverse tunnels</a>
-</td>
-<td>
-<span class="listing-reading-time">5 min</span>
-</td>
-</tr>
-<tr data-index="6" data-categories="elm,functional-programming" data-listing-date-sort="1611792000000" data-listing-file-modified-sort="1693230638438" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-title-sort="How to get unique values in an Elm list?" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<span class="listing-date">Jan 28, 2021</span>
-</td>
-<td>
-<a href="./blog/how-to-get-unique-values-in-an-elm-list/index.html" class="title listing-title">How to get unique values in an Elm list?</a>
-</td>
-<td>
-<span class="listing-reading-time">4 min</span>
-</td>
-</tr>
-</tbody>
-
-</table>
-<div class="listing-no-matching d-none">
-No matching items
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Publications</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Almeida2023ApplicationOD" class="csl-entry" role="listitem">
+Almeida, João L. R., Gonçalo Charters Santos Cruz, Diogo Silva, and Tiago Oliveira. 2023. <span>“Application of Deep Learning to the Detection of Foreign Object Debris at Aerodromes’ Movement Area.”</span> In <em>VISIGRAPP</em>. <a href="https://www.scitepress.org/Link.aspx?doi=10.5220/0011790600003417">https://www.scitepress.org/Link.aspx?doi=10.5220/0011790600003417</a>.
 </div>
-</div></main> <!-- /main -->
+<div id="ref-Flix2023VisionbasedCM" class="csl-entry" role="listitem">
+Félix, Miguel, Tiago Oliveira, Gonçalo Charters Santos Cruz, Diogo Silva, João Alves, and Luis Santos. 2023. <span>“Vision-Based Cooperative Moving Path Following for Fixed-Wing UAVs.”</span> <em>2023 International Conference on Unmanned Aircraft Systems (ICUAS)</em>, 782–89. <a href="https://ieeexplore.ieee.org/document/10155793/">https://ieeexplore.ieee.org/document/10155793/</a>.
+</div>
+<div id="ref-Ribeiro2022TowardsTA" class="csl-entry" role="listitem">
+Ribeiro, Ricardo A., Alexandre Bernardino, Gonçalo Charters Santos Cruz, Diogo Silva, Luís Félix, João Caetano, Duarte Folgado, et al. 2022. <span>“Towards the Automation of Wildfire Monitoring with Aerial Vehicles: The FIREFRONT Project.”</span> In <em>ICPR Workshops</em>. <a href="https://link.springer.com/chapter/10.1007/978-3-031-37742-6_15">https://link.springer.com/chapter/10.1007/978-3-031-37742-6_15</a>.
+</div>
+<div id="ref-Silva2016EfficientEA" class="csl-entry" role="listitem">
+Silva, Diogo, Helena Aidos, and Ana L. N. Fred. 2016. <span>“Efficient Evidence Accumulation Clustering for Large Datasets.”</span> In <em>International Conference on Pattern Recognition Applications and Methods</em>. <a href="https://www.scitepress.org/Link.aspx?doi=10.5220/0005770803670374">https://www.scitepress.org/Link.aspx?doi=10.5220/0005770803670374</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

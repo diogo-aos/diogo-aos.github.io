@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.diogoaos.com/research/index.html</loc>
+    <lastmod>2023-09-03T14:34:26.058Z</lastmod>
+  </url>
+  <url>
     <loc>https://www.diogoaos.com/index.html</loc>
-    <lastmod>2023-08-28T18:36:22.383Z</lastmod>
+    <lastmod>2023-09-03T14:34:26.766Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog/how-to-get-unique-values-in-an-elm-list/index.html</loc>
-    <lastmod>2023-08-28T18:36:25.343Z</lastmod>
+    <lastmod>2023-09-03T14:34:28.002Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog/elm-elm-ui-and-the-building-of-a-dropdown-part-i/index.html</loc>
-    <lastmod>2023-08-28T18:36:28.647Z</lastmod>
+    <lastmod>2023-09-03T14:34:28.934Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.diogoaos.com/blog/2023-08-sorting-faces/pt2.html</loc>
+    <lastmod>2023-09-03T14:34:29.738Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog/2023-08-sorting-faces/index.html</loc>
-    <lastmod>2023-08-28T18:36:31.303Z</lastmod>
+    <lastmod>2023-09-03T14:34:30.602Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog/reusable-dropdown-in-elm-with-parameterized-types-part-ii/index.html</loc>
-    <lastmod>2023-08-28T18:36:34.915Z</lastmod>
+    <lastmod>2023-09-03T14:34:31.570Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html</loc>
-    <lastmod>2023-08-28T18:36:38.915Z</lastmod>
+    <lastmod>2023-09-03T14:34:33.330Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog/display-video-in-a-python-gui-with-dear-pygui/index.html</loc>
-    <lastmod>2023-08-28T18:36:41.503Z</lastmod>
+    <lastmod>2023-09-03T14:34:34.134Z</lastmod>
   </url>
   <url>
     <loc>https://www.diogoaos.com/blog.html</loc>
-    <lastmod>2023-08-28T18:36:45.167Z</lastmod>
-  </url>
-  <url>
-    <loc>https://www.diogoaos.com/research.html</loc>
-    <lastmod>2023-08-28T18:36:46.867Z</lastmod>
+    <lastmod>2023-09-03T14:34:34.498Z</lastmod>
   </url>
 </urlset>
