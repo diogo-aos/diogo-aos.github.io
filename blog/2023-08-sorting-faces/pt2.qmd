@@ -7,6 +7,9 @@ draft: false
 #bibliography: references.bib
 ---
 
+![](cover_pt2.png)
+
+
 After playing around further with the clustering parameters of the prototype in [part I](./index.qmd), this only took me so far. To finally be done with this task, I built on what I had in part I and added:
 
 - a strategy to continually break clusters; 

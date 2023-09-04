@@ -9,7 +9,7 @@ bibliography: references.bib
 ---
 
 
-![](thumbnaail2.jpg)
+![](cover_pt1.jpg)
 
 A few friends and family have recently asked me to share the photos of an event. There are a couple thousands of photos, with dozens of different people, so I wanted to share only the most relevant to them. Rather than spending an hour or so doing this, I wanted to use face recognition to help with this task.
 
