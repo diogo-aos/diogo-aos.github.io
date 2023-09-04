@@ -84,7 +84,7 @@ div.csl-indent {
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Diogo Silva - The pain of sorting images by faces I">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://www.diogoaos.com/blog/2023-08-sorting-faces/thumbnaail2.jpg">
+<meta property="og:image" content="https://www.diogoaos.com/blog/2023-08-sorting-faces/cover_pt1.jpg">
 <meta property="og:site-name" content="Diogo Silva">
 </head>
 
@@ -176,7 +176,7 @@ div.csl-indent {
 
 
 
-<p><img src="thumbnaail2.jpg" class="img-fluid"></p>
+<p><img src="cover_pt1.jpg" class="img-fluid"></p>
 <p>A few friends and family have recently asked me to share the photos of an event. There are a couple thousands of photos, with dozens of different people, so I wanted to share only the most relevant to them. Rather than spending an hour or so doing this, I wanted to use face recognition to help with this task.</p>
 <p>Google Photos does this quite well, but the photo quality after upload is reduced and I’ve already hit my storage limit anyway. There are a few programs that do this as well. Of the free ones, I wanted something that worked in Linux. Shotwell is reported to have this ability, but I couldn’t get it to work. DigiKam also has it, but I found it to be very lacking - especially the recognition feature. So, I decided to learn a bit more about face recognition and see if I could come up with something quickly and easily.</p>
 <p>I looked for simple frameworks to help me accomplish this. I found DeepFace <span class="citation" data-cites="serengil2020lightface deepface-repo">(<a href="#ref-serengil2020lightface" role="doc-biblioref">Serengil and Ozpinar 2020</a>; <a href="#ref-deepface-repo" role="doc-biblioref"><span>“<span>DeepFace</span> GitHub Repository”</span> n.d.</a>)</span>, but after an hour or so, I couldn’t get it to work as I wanted. The high-level API didn’t lend well to the workflow I wanted. And when trying to use the low-level API, I hit some Tensorflow-related problems related to the lack of GPU on my system. I then found FaceNet <span class="citation" data-cites="facenet-pytorch schroff2015facenet">(<a href="#ref-facenet-pytorch" role="doc-biblioref">Timesler</a>; <a href="#ref-schroff2015facenet" role="doc-biblioref">Schroff, Kalenichenko, and Philbin 2015</a>)</span>. It provides tools for face detection and generating embeddings that can be used with standard ML techniques for recognition. It works well and has a PyPI package ready to go.</p>
