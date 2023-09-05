@@ -6,3 +6,19 @@ nocite: |
 ---
 
 # Publications
+
+::: {#refs}
+:::
+
+# Advisor
+
+<!-- - 2023 - Soares "- 2023 - Francisco Matilde - "Study of the Use of Synthetic Images in the Training of Neural Networks for Detection with UAVs""
+- 2023 - Branco Kalman fusion "- 2023 - Francisco Matilde - "Study of the Use of Synthetic Images in the Training of Neural Networks for Detection with UAVs" -->
+
+- 2023 - Francisco Matilde - "Study of the Use of Synthetic Images in the Training of Neural Networks for Detection with UAVs"
+- 2023 - José Rocha - "Design and Implementation of a Vision-based Autoland System"
+- 2022 - Miguel Félix - "Target tracking control system for multi-UAV maritime
+applications"
+- 2022 - João Alves "Software architecture for low-cost UAVs – An application considering automatic target tracking mission scenarios"
+- 2017 - Fábio Lourenço "Desenvolvimento de Sistema de Telemetria sobre Vídeo para UAS da FAP"
+<!-- https://www.academiafa.edu.pt/paginas/revcientif1571214007_footer1571213530_352academiafa/ficheiros/revcientif/revista-ci-ntifica-vers-o-final-publicada_534.pdf -->
