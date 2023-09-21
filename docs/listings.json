@@ -10,5 +10,15 @@
       "/blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html",
       "/blog/how-to-get-unique-values-in-an-elm-list/index.html"
     ]
+  },
+  {
+    "listing": "/phd/index.html",
+    "items": []
+  },
+  {
+    "listing": "/phd.html",
+    "items": [
+      "/phd/lectures_notes/estimation/l1.html"
+    ]
   }
 ]

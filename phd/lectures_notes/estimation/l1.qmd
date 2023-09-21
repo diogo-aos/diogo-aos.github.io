@@ -1,0 +1,377 @@
+---
+title: Lesson 1 - Probability
+author: "Diogo Silva"
+date: "2021-03-27"
+categories: [estimation-classification-course,phd,lecture-notes]
+draft: false
+format:
+  html:
+    code-fold: true
+---
+
+
+# Binomial Distribution
+
+What is the probability of an event [\\(A\\)]{.math .inline} being
+observed [\\(k\\)]{.math .inline} times in [\\(n\\)]{.math .inline}
+random experiments
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+n = 100
+k_max = 100
+p = 1/6
+
+def binomial(n: int, k: int) -> float:
+    return math.comb(n, k) * p**k * (1-p)**(n-k)
+
+k_bin = [binomial(n, k_i) for k_i in range(1,k_max)]
+
+plt.bar(range(1,k_max), k_bin)
+plt.xlabel("k")
+plt.ylabel("P")
+
+print(f"# experiments: {n}")
+print(f"sum over all k: {sum(k_bin)}")
+```
+
+# Generation of R.V.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+import random
+
+n = 10
+p = np.random.randint(10,50,n)
+p = p / np.linalg.norm(p)
+print(p)
+
+x = np.array([1, 1, 1, 2, 2, 2])
+y = np.array([1, 2, 3, 1, 2, 3])
+P = np.array([.1, .2, .1, .3, .1, .2])
+```
+
+
+# Problems
+
+## Problem 1
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+
+x = np.array([1, 1, 1, 2, 2, 2])
+x_vals = np.sort(np.unique(x))
+
+y = np.array([1, 2, 3, 1, 2, 3])
+y_vals = np.sort(np.unique(y))
+
+P_xy = np.array([.1, .2, .1, .3, .1, .2])
+# rows = X, cols=Y
+P_xy = P_xy.reshape((2,3))
+
+# i P(x) marignal
+P_x = P_xy.sum(axis=1)
+
+# ii P(Y) marginal
+P_y = P_xy.sum(axis=0)
+
+# iii P(x|y)
+# P_x_cond_y = P(x,y) / p(y)
+
+P_x_cond_y = P_xy / P_y
+
+# iv E{x}
+E_x = sum( x_vals * P_x)
+
+# v E{Y}
+
+E_y = sum(y_vals * P_y)
+
+# vi E{x+y} = E[x] + E[y]
+E_xpy = E_x + E_y
+
+
+# vii E{xy}=??
+```
+
+## Problem 2
+
+The meaning of variables x,y,z is the following : x-there is gas in the
+tank; y -- battery is OK; z- motor starts at first attempt. Define a
+probability distribution for these variables.
+
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+x = [0, 1]
+y = [0, 1]
+z = [0, 1]
+
+# last column is probability
+P_xyz = [
+  (0, 0, 0, 0),
+  (0, 0, 1, 0.025),
+  (0, 1, 0, 0.025),
+  (0, 1, 1, 0.1),
+  (1, 0, 0, 0.025),
+  (1, 0, 1, 0.1),
+  (1, 1, 0, 0.025),
+  (1, 1, 1, 0.7),
+]
+```
+
+## Problem 3
+
+3.  A random variable x\~N(0,R) has an uncertainty ellipsoid with semi
+    axis major \[3 1\], minor \[-.2 .6\].
+
+Compute the covariance matrix R knowing that
+[\\(E\\{{x_1}\^2\\}=1\\)]{.math .inline}.
+
+The geometric interpretation of the ellipsoid of the covariance matrix
+is that the direction of the axis is the eigen vector and the length of
+the axis is the eigen value.
+
+-   Let a1 and a2 be the semi major and semi minor axis vectors,
+    respectevely.
+-   Since we are given the major and minor semi axis, after normalizing
+    we get the covariance matrix eigenvectors [\\(e_1\\)]{.math .inline}
+    and [\\(e_2\\)]{.math .inline}
+-   However, the relationship between the uncertainty ellipsoid of the
+    covariance matrix and its corresponding eigenvectors and eigenvalues
+    is [\\(axis=\\alpha \\sqrt{\\lambda_i} e_i\\)]{.math .inline}.
+-   From this, we can write [\\(axis_i = \\alpha \\sqrt{\\lambda_i} e_i
+    \\rightarrow \|\|axis_i\|\| = \\alpha \\sqrt{\\lambda_i}\\)]{.math
+    .inline}
+-   We can easily find the eigenvector, but the axis magnitude will not
+    be the eigenvalue, because we can draw many uncertainty ellipsoids
+    depending on the uncertainty we wish to target (modeled with
+    [\\(\\alpha\\)]{.math .inline}). These ellipsoids will be
+    concentric.
+-   So, we want to compute the 2 eigenvalues and the alpha.
+-   From the axis equation above, we can write 2 equations and then we
+    can use the following for the third:
+    -   [\\(Cov = \\sum\_{i}{\\lambda_i e_i e_i\^T}\\)]{.math .inline}
+    -   This means that the first element of the covariance matrix is
+        [\\(\\sum\_{}{\\lambda_i e\_{i_1}\^2}\\)]{.math .inline}
+    -   And since we know that the variance of [\\(x_1\\)]{.math
+        .inline} is 1, we know that [\\(\\sum\_{}{\\lambda_i
+        e\_{i_1}\^2} = 1\\)]{.math .inline}
+-   The resulting equations are:
+    -   [\\(\\alpha = \\sum\_{i}{\|\|a_i\|\| e\_{i_1}\^2}\\)]{.math
+        .inline}
+        -   If the variance of [\\(x_1\\)]{.math .inline} was different
+            then 1, we would just multiply that in the left hand side of
+            the equation.
+    -   [\\(\\lambda_i = \\frac{\|\|a_i\|\|}{\\alpha}\\)]{.math .inline}
+
+```{python}
+import numpy as np
+
+# ellipsoid major and minor axis
+a1 = np.array([[3,1]])
+a2 = np.array([[-0.2, 0.6]])
+
+a1_norm = np.linalg.norm(a1)
+a2_norm = np.linalg.norm(a2)
+
+e1 = a1/a1_norm
+e2 = a2/a2_norm
+
+
+alpha = a1_norm * e1[0][0]**2 + a2_norm * e2[0][0]**2
+lambda_1 = a1_norm / alpha
+lambda_2 = a2_norm / alpha
+
+
+
+print(f"eigen values = {lambda_1, lambda_2}")
+print(f"alpha = {alpha}")
+
+print(f"eigen vectors = {e1, e2}")
+
+
+R = lambda_1 * e1 * e1.T + \
+    lambda_2 * e2 * e2.T
+np.set_printoptions(precision=3)
+print('R=\n', R)
+```
+
+## Problem 4
+
+4.  We known that a bridge falls with probability .8 if the main
+    structure elements break and this happens with probability .001.
+    Which is the break probability knowing that the bridge has fallen?
+    Discuss if this problem can be solved
+
+We have 2 r.v. that take the following values: {[\\(B\_{falls}\\)]{.math
+.inline}, [\\(B\_{stands}\\)]{.math .inline}} and
+{[\\(E\_{breaks}\\)]{.math .inline}, [\\(E\_{nobreak}\\)]{.math
+.inline}}.
+
+We know:
+
+-   [\\(P(E\_{breaks}) = 0.0001\\)]{.math .inline}, this is the marginal
+-   [\\(P(B\_{falls} \| E\_{breaks}) = 0.8\\)]{.math .inline}, this is
+    the conditional
+
+We want to know [\\(P(E\_{breaks} \| B\_{falls})\\)]{.math .inline}.
+
+From [\\(P(B\_{falls} \| E\_{breaks}) = 0.8 = \\frac{P(B\_{falls},
+E\_{breaks})}{P(E\_{breaks})}\\)]{.math .inline}
+
+We can deduce that [\\(P(B\_{falls}, E\_{breaks}) = 0.8 \\times
+0.0001\\)]{.math .inline}
+
+But, we don't know the marginal for [\\(P(B\_{falls})\\)]{.math
+.inline}, so we can't compute the conditional [\\(P(E\_{breaks} \|
+B\_{falls}) = \\frac{P(B\_{falls},
+E\_{breaks})}{P(B\_{falls})}\\)]{.math .inline}
+
+## Problem 5
+
+5.  Three prisoners A, B, C are in separate cells. One is going to be
+    released and the other two will be condemned to die. Prisoner A asks
+    the jailer to deliver a farewell letter to one of the other
+    prisoners which will be condemned. The next day the jailer tells him
+    that he delivered the letter to prisoner B. What is the probability
+    of A being set free before and after the jailer answer?
+
+The distribution is the following (r=released, c=condemned)0
+
+| A |  B |  C |
+--- --- ---
+r   c   c
+c   r   c
+c   c   r
+
+-   We want to know [\\(P(A=r)\\)]{.math .inline} and [\\(P(A=r \|
+    B=c)\\)]{.math .inline}.
+-   Since there is only one scenario where A is released, [\\(P(A=r) =
+    \\frac{1}{3}\\)]{.math .inline}
+-   Since there are 2 scenarios where B is condemned, [\\(P(B=c) =
+    \\frac{2}{3}\\)]{.math .inline}
+-   Since there is only one scenario where A is released and B is
+    condemned, [\\(P(A=r, B=c) = \\frac{1}{3}\\)]{.math .inline}
+-   [\\(P(A=r \| B=c) = \\frac{P(A=r, B=c)}{P(B=c)} = \\frac{1/3}{2/3} =
+    \\frac{1}{2}\\)]{.math .inline}
+
+
+
+## Work 
+
+Let x be a random variable with distribution N(0,1). Determine in an
+exact or approximate way:
+
+$E\{x^2\}$, $E\{x^4\}$, $E\{cos(x)\}$, $E\{tan(x)\}$, $E\{tan^{-1}(x)\}$
+
+
+```{python}
+import sympy
+import math
+
+def normal_pdf(x, mean, var):
+    left = 1 / (var * (2*math.pi)**(1/2))
+    over = -0.5 * ((x - mean) / var) ** 2
+    return left * sympy.exp(over)
+
+
+x = sympy.symbols("x")
+mean = 0
+var = 1
+
+v = x
+dist = normal_pdf(v, mean, var)
+E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
+print("variable:", v)
+print("dist:", dist)
+print("E", E) # should be 0, since mean is 0
+print("")
+
+
+v = x**2
+dist = normal_pdf(v, mean, var)
+E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
+print("variable:", v)
+print("dist:", dist)
+print("E", E) 
+print("")
+
+
+v = x**4
+dist = normal_pdf(v, mean, var)
+E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
+print("variable:", v)
+print("dist:", dist)
+print("E", E) 
+print("")
+
+
+v = sympy.cos(x)
+dist = normal_pdf(v, mean, var)
+E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
+print("variable:", v)
+print("dist:", dist)
+print("E", E)
+print("")
+
+
+
+v = sympy.tan(x)
+dist = normal_pdf(v, mean, var)
+E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
+print("variable:", v)
+print("dist:", dist)
+print("E", E)
+print("")
+
+
+v = sympy.atan(x)
+dist = normal_pdf(v, mean, var)
+E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
+print("variable:", v)
+print("dist:", dist)
+print("E", E)
+print("")
+```
+
+There are 3 indefinite integrals. Let's take a look at the corresponding
+pdfs.
+
+
+``` {python}
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+x = np.linspace(-20, 20)
+
+
+transforms = {
+  'x': lambda x: x,
+  'x**2': lambda x: x**2,
+  'x**4': lambda x: x**4,
+  'cos(x)': lambda x: np.cos(x),
+  'tan(x)': lambda x: np.tan(x),
+  'atan(x)': lambda x: np.arctan(x)
+}
+
+for l, t in transforms.items():
+  f = (1/((2*math.pi)**(1/2))) * np.exp(-0.5 * t(x)**2)
+  plt.plot(x, f)
+plt.legend(transforms.keys())
+plt.title("Normal distribution with several transformations")
+```
+
+Since the pdf of cos(x), tan(x) and atan(x) have non negative values in the whole domain and were integrating $]-\inf, \inf[$, we can't compute the expected value?
