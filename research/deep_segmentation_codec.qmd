@@ -1,0 +1,44 @@
+---
+title: "Deep codec for remote video segmentation"
+author:
+  - name: "Diogo Silva"
+    orcid: 0000-0003-1557-3082
+    email: dasilva@academiafa.edu.pt
+    affiliation:
+      - name: Academia da Força Aérea
+        city: Sintra
+        url: https://academiafa.edu.pt/
+date: "2023-09-05"
+date-modified: "2023-09-05"
+categories: [phd, idea]
+draft: true
+#bibliography: references.bib
+#csl: ieee.csl
+abstract: >
+  Image segmentation models usually receive full images as input.
+  However, full images are expensive to transmit over a network.
+  Video streaming codecs strive address this problem by providing a good balance between compression and image reconstruction.
+  We introduce the idea of using a deep video codec and segmentation model pair, to optimize segmentation performance on remote compute, when good image reconstruction is not a target metric.
+
+  
+---
+
+
+**What is the ping of this paper? Optimized embeddings for segmentation in the form of video codec**
+
+# Introduction
+
+- SOTA video segmentation is deep learning based
+- the best segmentation models are heavy and not ideal for the edge
+- solutions
+  - solution 1: use weaker, edge compatible, models
+  - solution 2: transmit data over network for remote computing
+- video codecs allow tunable compression of the video and make it viable for real time transmission, but after transmission the video must be decoded for full image reconstruction and then fed to segmentation models
+- video codecs usually predict the next frame from the previous frame using reduced information by taking advantage of temporal redundancies
+- if full image reconstruction is not a requirement, a specialized, edge-capable, real-time video codec might be developed to focus on segmentation performance
+  - save time on decoding
+  - 
+
+
+
+# Look into it

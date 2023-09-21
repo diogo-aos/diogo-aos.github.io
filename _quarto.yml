@@ -22,3 +22,5 @@ format:
     css: styles.css
 resources:
   - CNAME
+execute:
+  freeze: auto

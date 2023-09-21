@@ -1,0 +1,65 @@
+---
+title: ""
+author: "Diogo Silva"
+date: "2023-08-29"
+categories: [px4, pixhawk, ros, opencv, computer-vision]
+draft: true
+bibliography: refs.bib
+csl: ../../ieee.csl
+
+---
+
+
+# Things to try and research for indoor autonomous flight
+
+[ ] connect raspicam to Jetson
+[ ] connect 2 raspicams to Jetson/Rpi
+[ ] simple tilt for rpicam with servo
+[ ] stereo with 2 rpicams
+[ ] gazebo sim with tilt cam
+[ ] connect sonar for autolanding height estimation
+
+
+# indoor flight - other projects
+
+- https://discuss.ardupilot.org/t/indoor-autonomous-flight-with-arducopter-ros-and-aruco-boards-detection/34699
+- https://ardupilot.org/dev/docs/ros-aruco-detection.html
+- ICRA "Fast and Effective Online Pose Estimation and Mapping for UAVs"
+    - https://www.ipb.uni-bonn.de/pdfs/schneider16icra.pdf
+
+# Autolanding
+
+- ROcha
+    - https://github.com/jprocha16/offboard_py
+    - https://github.com/jprocha16/landing_sensor_py
+
+
+
+# Depth perception
+
+I want to know if where the drone is landing is adequate.
+
+## Stereo
+
+Use 2 raspicams, one with a simple tilt servo, the other fixed. Do stereo onboard.
+
+- opencv docs
+    - https://docs.opencv.org/4.x/dd/d53/tutorial_py_depthmap.html
+
+## simple sonar 
+
+# Pose estimation
+## marker - aruco
+
+- opencv docs
+    - https://docs.opencv.org/4.x/d5/dae/tutorial_aruco_detection.html
+- Bachelor thesis
+    - https://www.diva-portal.org/smash/get/diva2:1505194/FULLTEXT01.pdf
+- aruco library
+    - https://www.uco.es/investiga/grupos/ava/portfolio/aruco/
+
+## Pixhawk + vision
+
+- feed px4 kf with vision estimate
+    - https://docs.px4.io/main/en/advanced_config/parameter_reference.html
+    - https://dev.px4.io/v1.9.0_noredirect/en/ros/external_position_estimation.html
