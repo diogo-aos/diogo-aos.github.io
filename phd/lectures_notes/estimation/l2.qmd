@@ -1,0 +1,115 @@
+---
+title: Lesson 2 - 
+author: "Diogo Silva"
+date: "2021-03-27"
+categories: [estimation-classification-course,phd,lecture-notes]
+draft: false
+format:
+  html:
+    code-fold: true
+---
+
+# Overview
+
+- Classic estimation
+    - Parabolic fit
+    - Least mean squares
+    - Estimation
+    - Regression
+    - Frequency estimation
+    - Robustness
+    - RANSAC
+    - Exercises & Work
+- Classic probabilistic methods
+    - classic vs bayesian
+    - Maximum Likelihood
+    - ML vs LS
+    - Crámer-Rao bound
+    - Monte-Carlo
+    - Exercises
+- Bibliography
+    - Duda, Hart, Stork, Pattern Classification, Wiley, 2001.
+    - J. Marques, Reconhecimento de Padrões. Métodos Estatísticos e Neuronais, IST Press, 1999
+
+
+# Exercises
+
+## Problem 1 - linear least squares, predict signal at t
+
+Given a signal $y=( y_1 , ..., y_N )$, determine the coefficients of the linear predictor
+
+$y_t = a_1 y_{t-1} +  ...  a_p y_{t-p}, N>>P$
+
+using the least squares method.
+
+---
+
+Let $\theta = [a_1,..., a_p]^T$ be the parameter set.
+
+Error is given by
+
+
+$$
+E = \sum_{i}{(y_i - x_i \theta )^2}
+$$
+
+Where, for each $y_i$, we have $x_i = (y_{i-1}, ..., y_{i-p})$. This means, using historical data, we can't use $y_1, ..., y_p$.
+
+We want to minimize $\theta$ such that $E = 0$.
+
+$$
+\frac{\partial E}{\partial \theta_j} = \frac{\partial \sum_{i}{(y_i - x_i \theta )^2}}{\partial \theta_j} = 
+2 \sum_{i}{ \frac{\partial(y_i - x_i \theta )}{\partial \theta_j}} = 
+2 \sum_{i}{ -x_{i_j} \theta_j}
+$$
+
+We then have 
+
+$$
+\frac{\partial E}{\partial \theta} = 
+\begin{bmatrix}
+-2 \sum_{i}{x_{i_1} \theta_1} \\
+\vdots \\
+-2 \sum_{i}{x_{i_p} \theta_p} \\
+ \end{bmatrix}
+ = 0
+$$
+
+Solving this equation will give us the parameter values.
+
+
+## Problem 2 - predict signal in [t,t+k] TODO RECHECK
+
+By increasing the prediction window, we're increasing the number of parameters.
+If, for each prediction, we were looking at $p$ previous signals and using $p$ parameters for prediciting the next signal $y_t$, now we'll need $k \times p$ parameters for predicting $(y_t, ..., y_{t+k})$. We have 
+
+$$
+\begin{bmatrix}
+x_1 \\
+\vdots \\
+x_N
+\end{bmatrix}
+\times
+\begin{bmatrix}
+a_{1_1}  & ... & a_{k_1} \\
+\vdots &  & \vdots \\
+a_{1_p}  & ... & a_{k_p} \\
+\end{bmatrix} = 
+\begin{bmatrix}
+y_{1_1} & ... & y_{1_k} \\
+\vdots &  & \vdots \\
+y_{N_1}  & ... & y_{N_k} \\
+\end{bmatrix}
+$$
+
+Since the prediciton at $y_t$ doesn't affect subsequent predictions and the parameters for $y_t$
+
+$$
+\frac{\partial E}{\partial \theta} = 
+\begin{bmatrix}
+-2 \sum_{i}{x_{i_1} \theta_{1_1}} & ... & -2 \sum_{i}{x_{i_1} \theta_{k_1}}\\
+\vdots & & \vdots \\
+-2 \sum_{i}{x_{i_p} \theta_{1_p}} & ... & -2 \sum_{i}{x_{i_p} \theta_{k_p}}
+ \end{bmatrix}
+ = 0
+$$

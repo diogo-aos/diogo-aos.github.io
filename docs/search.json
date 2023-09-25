@@ -186,6 +186,34 @@
     "href": "phd.html",
     "title": "Diogo Silva",
     "section": "",
-    "text": "Date\n\n\nTitle\n\n\nReading Time\n\n\n\n\n\n\nMar 27, 2021\n\n\nLesson 1 - Probability\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
+    "text": "Date\n\n\nTitle\n\n\nReading Time\n\n\n\n\n\n\nMar 27, 2021\n\n\nLesson 2 -\n\n\n2 min\n\n\n\n\nMar 27, 2021\n\n\nLesson 1 - Probability\n\n\n7 min\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "phd/lectures_notes/estimation/l2.html",
+    "href": "phd/lectures_notes/estimation/l2.html",
+    "title": "Lesson 2 -",
+    "section": "",
+    "text": "Classic estimation\n\nParabolic fit\nLeast mean squares\nEstimation\nRegression\nFrequency estimation\nRobustness\nRANSAC\nExercises & Work\n\nClassic probabilistic methods\n\nclassic vs bayesian\nMaximum Likelihood\nML vs LS\nCrámer-Rao bound\nMonte-Carlo\nExercises\n\nBibliography\n\nDuda, Hart, Stork, Pattern Classification, Wiley, 2001.\nJ. Marques, Reconhecimento de Padrões. Métodos Estatísticos e Neuronais, IST Press, 1999"
+  },
+  {
+    "objectID": "phd/lectures_notes/estimation/l2.html#problem-1---linear-least-squares-predict-signal-at-t",
+    "href": "phd/lectures_notes/estimation/l2.html#problem-1---linear-least-squares-predict-signal-at-t",
+    "title": "Lesson 2 -",
+    "section": "Problem 1 - linear least squares, predict signal at t",
+    "text": "Problem 1 - linear least squares, predict signal at t\nGiven a signal \\(y=( y_1 , ..., y_N )\\), determine the coefficients of the linear predictor\n\\(y_t = a_1 y_{t-1} + ... a_p y_{t-p}, N&gt;&gt;P\\)\nusing the least squares method.\n\nLet \\(\\theta = [a_1,..., a_p]^T\\) be the parameter set.\nError is given by\n\\[\nE = \\sum_{i}{(y_i - x_i \\theta )^2}\n\\]\nWhere, for each \\(y_i\\), we have \\(x_i = (y_{i-1}, ..., y_{i-p})\\). This means, using historical data, we can’t use \\(y_1, ..., y_p\\).\nWe want to minimize \\(\\theta\\) such that \\(E = 0\\).\n\\[\n\\frac{\\partial E}{\\partial \\theta_j} = \\frac{\\partial \\sum_{i}{(y_i - x_i \\theta )^2}}{\\partial \\theta_j} =\n2 \\sum_{i}{ \\frac{\\partial(y_i - x_i \\theta )}{\\partial \\theta_j}} =\n2 \\sum_{i}{ -x_{i_j} \\theta_j}\n\\]\nWe then have\n\\[\n\\frac{\\partial E}{\\partial \\theta} =\n\\begin{bmatrix}\n-2 \\sum_{i}{x_{i_1} \\theta_1} \\\\\n\\vdots \\\\\n-2 \\sum_{i}{x_{i_p} \\theta_p} \\\\\n\\end{bmatrix}\n= 0\n\\]\nSolving this equation will give us the parameter values."
+  },
+  {
+    "objectID": "phd/lectures_notes/estimation/l2.html#problem-2---predict-signal-in-ttk",
+    "href": "phd/lectures_notes/estimation/l2.html#problem-2---predict-signal-in-ttk",
+    "title": "Lesson 2 -",
+    "section": "Problem 2 - predict signal in [t,t+k]",
+    "text": "Problem 2 - predict signal in [t,t+k]\nBy increasing the prediction window, we’re increasing the number of parameters. If, for each prediction, we were looking at \\(p\\) previous signals and using \\(p\\) parameters for prediciting the next signal \\(y_t\\), now we’ll need \\(k \\times p\\) parameters for predicting \\((y_t, ..., y_{t+k})\\). We have\n\\[\n\\begin{bmatrix}\nx_1 \\\\\n\\vdots \\\\\nx_N\n\\end{bmatrix}\n\\times\n\\begin{bmatrix}\na_{1_1}  & ... & a_{k_1} \\\\\n\\vdots &  & \\vdots \\\\\na_{1_p}  & ... & a_{k_p} \\\\\n\\end{bmatrix} =\n\\begin{bmatrix}\ny_{1_1} & ... & y_{1_k} \\\\\n\\vdots &  & \\vdots \\\\\ny_{N_1}  & ... & y_{N_k} \\\\\n\\end{bmatrix}\n\\]\nSince the prediciton at \\(y_t\\) doesn’t affect subsequent predictions and the parameters for \\(y_t\\)\n\\[\n\\frac{\\partial E}{\\partial \\theta} =\n\\begin{bmatrix}\n-2 \\sum_{i}{x_{i_1} \\theta_{1_1}} & ... & -2 \\sum_{i}{x_{i_1} \\theta_{k_1}}\\\\\n\\vdots & & \\vdots \\\\\n-2 \\sum_{i}{x_{i_p} \\theta_{1_p}} & ... & -2 \\sum_{i}{x_{i_p} \\theta_{k_p}}\n\\end{bmatrix}\n= 0\n\\]"
+  },
+  {
+    "objectID": "phd/lectures_notes/estimation/l2.html#problem-2---predict-signal-in-ttk-todo-recheck",
+    "href": "phd/lectures_notes/estimation/l2.html#problem-2---predict-signal-in-ttk-todo-recheck",
+    "title": "Lesson 2 -",
+    "section": "Problem 2 - predict signal in [t,t+k] TODO RECHECK",
+    "text": "Problem 2 - predict signal in [t,t+k] TODO RECHECK\nBy increasing the prediction window, we’re increasing the number of parameters. If, for each prediction, we were looking at \\(p\\) previous signals and using \\(p\\) parameters for prediciting the next signal \\(y_t\\), now we’ll need \\(k \\times p\\) parameters for predicting \\((y_t, ..., y_{t+k})\\). We have\n\\[\n\\begin{bmatrix}\nx_1 \\\\\n\\vdots \\\\\nx_N\n\\end{bmatrix}\n\\times\n\\begin{bmatrix}\na_{1_1}  & ... & a_{k_1} \\\\\n\\vdots &  & \\vdots \\\\\na_{1_p}  & ... & a_{k_p} \\\\\n\\end{bmatrix} =\n\\begin{bmatrix}\ny_{1_1} & ... & y_{1_k} \\\\\n\\vdots &  & \\vdots \\\\\ny_{N_1}  & ... & y_{N_k} \\\\\n\\end{bmatrix}\n\\]\nSince the prediciton at \\(y_t\\) doesn’t affect subsequent predictions and the parameters for \\(y_t\\)\n\\[\n\\frac{\\partial E}{\\partial \\theta} =\n\\begin{bmatrix}\n-2 \\sum_{i}{x_{i_1} \\theta_{1_1}} & ... & -2 \\sum_{i}{x_{i_1} \\theta_{k_1}}\\\\\n\\vdots & & \\vdots \\\\\n-2 \\sum_{i}{x_{i_p} \\theta_{1_p}} & ... & -2 \\sum_{i}{x_{i_p} \\theta_{k_p}}\n\\end{bmatrix}\n= 0\n\\]"
   }
 ]

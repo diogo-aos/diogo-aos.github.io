@@ -1,10 +1,10 @@
 ---
 title: "Diogo Silva"
-subtitle: Research engineer
+subtitle: Research Engineer @ [🇵🇹 Air Force Academy](https://academiafa.edu.pt/){target="_blank"}
 image: profile.svg
 page-layout: full
 about:
-  template: trestles
+  template: jolla
   links:
     - icon: mastodon
       text: mastodon
@@ -17,4 +17,4 @@ about:
       href: https://github.com/diogo-aos
 ---
 
-<iframe allowfullscreen sandbox="allow-top-navigation allow-scripts allow-popups allow-popups-to-escape-sandbox" width="400" height="800" src="https://mastofeed.com/apiv2/feed?userurl=https%3A%2F%2Fsigmoid.social%2Fusers%2Fdiogo&theme=auto&size=100&header=false&replies=false&boosts=false"></iframe>
+<!-- <iframe allowfullscreen sandbox="allow-top-navigation allow-scripts allow-popups allow-popups-to-escape-sandbox" width="400" height="800" src="https://mastofeed.com/apiv2/feed?userurl=https%3A%2F%2Fsigmoid.social%2Fusers%2Fdiogo&theme=auto&size=100&header=false&replies=false&boosts=false"></iframe> -->
