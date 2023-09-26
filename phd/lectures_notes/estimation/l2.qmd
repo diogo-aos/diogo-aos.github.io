@@ -83,6 +83,8 @@ Solving this equation will give us the parameter values.
 By increasing the prediction window, we're increasing the number of parameters.
 If, for each prediction, we were looking at $p$ previous signals and using $p$ parameters for prediciting the next signal $y_t$, now we'll need $k \times p$ parameters for predicting $(y_t, ..., y_{t+k})$. We have 
 
+
+
 $$
 \begin{bmatrix}
 x_1 \\
@@ -113,3 +115,86 @@ $$
  \end{bmatrix}
  = 0
 $$
+
+
+
+---
+
+# Least squares demo
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+dim = 2
+N = 100
+
+params = [2, 3]
+interval = [0, 200]
+outlier_fraction = 0.25
+
+## create dataset
+
+x = np.random.randint(interval[0], interval[1], (N, 2))
+gt = x[:,0] * params[0] + x[:,1] * params[1]
+
+# add random noise
+y = gt + np.random.random(gt.shape)*0.1
+
+# add outliers with 1000*N(0,1)
+idx = np.random.randint(0, N, int(outlier_fraction * N))
+y[idx] = y[idx] + np.random.rand(idx.size)*1000
+
+
+
+
+# plot
+xx, yy = np.meshgrid(range(interval[1]), range(interval[1]))
+z_plane = xx*params[0] + yy*params[1]
+
+# Create figure
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot 3D plane
+ax.plot_surface(xx, yy, z_plane, alpha=0.8)
+
+# Set labels
+ax.set_xlabel('x1')
+ax.set_ylabel('x2')
+ax.set_zlabel('y')
+
+
+#and i would like to plot this point : 
+ax.scatter(x[:,0], x[:,1], gt, color='red')
+
+ax.scatter(x[:,0], x[:,1], y, color='purple')
+
+# when directly solving the linear equation X.theta = y, this is overdetermined, because there are many more equations than variables, so I'm just using the first #dim equations
+# if we were doing RANSAC, the number of samples each time would also be this if we were going for the naive simple linear model
+
+z_gt = np.linalg.solve(x[:dim, :dim],
+                    gt[:dim])
+
+print('z_gt=', z_gt)
+
+z = np.linalg.solve(x.T.dot(x),
+                    x.T.dot(y))
+
+print('z=', z)
+
+# plot estimated surface
+# z_hat_plane = xx*z[0] + yy*z[1]
+# ax.plot_surface(xx, yy, z_hat_plane, alpha=0.8)
+
+# compute sum of squared error with z model
+y_hat = x.dot(z)
+for _y, _yhat in zip(y, y_hat):
+    print(_y, _yhat, (_y - _yhat)**2)
+sse = np.sum((y - y_hat)**2)**(1/2)
+print('sse=', sse)
+
+
+plt.show()
+
+```

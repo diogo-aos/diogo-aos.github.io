@@ -10,6 +10,7 @@ format:
 ---
 
 
+
 # Binomial Distribution
 
 What is the probability of an event [\\(A\\)]{.math .inline} being
