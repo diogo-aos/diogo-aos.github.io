@@ -1,14 +1,14 @@
 ---
 title: Lesson 1 - Probability
 author: "Diogo Silva"
-date: "2021-03-27"
+date: "2023-09-21"
+last-modified: "2023-09-30"
 categories: [estimation-classification-course,phd,lecture-notes]
 draft: false
 format:
   html:
     code-fold: true
 ---
-
 
 
 # Binomial Distribution
@@ -197,16 +197,6 @@ lambda_2 = a2_norm / alpha
 
 
 
-print(f"eigen values = {lambda_1, lambda_2}")
-print(f"alpha = {alpha}")
-
-print(f"eigen vectors = {e1, e2}")
-
-
-R = lambda_1 * e1 * e1.T + \
-    lambda_2 * e2 * e2.T
-np.set_printoptions(precision=3)
-print('R=\n', R)
 ```
 
 ## Problem 4
@@ -219,15 +209,7 @@ print('R=\n', R)
 We have 2 r.v. that take the following values: {[\\(B\_{falls}\\)]{.math
 .inline}, [\\(B\_{stands}\\)]{.math .inline}} and
 {[\\(E\_{breaks}\\)]{.math .inline}, [\\(E\_{nobreak}\\)]{.math
-.inline}}.
 
-We know:
-
--   [\\(P(E\_{breaks}) = 0.0001\\)]{.math .inline}, this is the marginal
--   [\\(P(B\_{falls} \| E\_{breaks}) = 0.8\\)]{.math .inline}, this is
-    the conditional
-
-We want to know [\\(P(E\_{breaks} \| B\_{falls})\\)]{.math .inline}.
 
 From [\\(P(B\_{falls} \| E\_{breaks}) = 0.8 = \\frac{P(B\_{falls},
 E\_{breaks})}{P(E\_{breaks})}\\)]{.math .inline}
@@ -277,86 +259,27 @@ exact or approximate way:
 
 $E\{x^2\}$, $E\{x^4\}$, $E\{cos(x)\}$, $E\{tan(x)\}$, $E\{tan^{-1}(x)\}$
 
+Below is the numerical solution. `sample_size` is the sample size from the normal distribution. `trials` is the number of times we will run the experiment. The expected value is the average of the expected values of each trial. 
 
-```{python}
-import sympy
-import math
-
-def normal_pdf(x, mean, var):
-    left = 1 / (var * (2*math.pi)**(1/2))
-    over = -0.5 * ((x - mean) / var) ** 2
-    return left * sympy.exp(over)
-
-
-x = sympy.symbols("x")
-mean = 0
-var = 1
-
-v = x
-dist = normal_pdf(v, mean, var)
-E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
-print("variable:", v)
-print("dist:", dist)
-print("E", E) # should be 0, since mean is 0
-print("")
-
-
-v = x**2
-dist = normal_pdf(v, mean, var)
-E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
-print("variable:", v)
-print("dist:", dist)
-print("E", E) 
-print("")
-
-
-v = x**4
-dist = normal_pdf(v, mean, var)
-E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
-print("variable:", v)
-print("dist:", dist)
-print("E", E) 
-print("")
-
-
-v = sympy.cos(x)
-dist = normal_pdf(v, mean, var)
-E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
-print("variable:", v)
-print("dist:", dist)
-print("E", E)
-print("")
-
-
-
-v = sympy.tan(x)
-dist = normal_pdf(v, mean, var)
-E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
-print("variable:", v)
-print("dist:", dist)
-print("E", E)
-print("")
-
-
-v = sympy.atan(x)
-dist = normal_pdf(v, mean, var)
-E = sympy.integrate(v * dist, (x, -sympy.oo, +sympy.oo))
-print("variable:", v)
-print("dist:", dist)
-print("E", E)
-print("")
-```
-
-There are 3 indefinite integrals. Let's take a look at the corresponding
-pdfs.
-
+All functions have a stable expected value, except for $tan(x)$, which is oscillating.
 
 ``` {python}
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-x = np.linspace(-20, 20)
+sample_size = 1000
+trials = 10000
+
+def get_sample():
+    x = np.random.normal(0, 1, sample_size)
+    # return x with -x
+    return x
+
+
+
+def expected_value_trial(func):
+    return sum([func(get_sample()).mean() for _ in range(trials)])/trials
 
 
 transforms = {
@@ -368,11 +291,40 @@ transforms = {
   'atan(x)': lambda x: np.arctan(x)
 }
 
-for l, t in transforms.items():
-  f = (1/((2*math.pi)**(1/2))) * np.exp(-0.5 * t(x)**2)
-  plt.plot(x, f)
-plt.legend(transforms.keys())
-plt.title("Normal distribution with several transformations")
+for func_desc, func in transforms.items():
+    print(f"expected value of {func_desc}: {expected_value_trial(func)}")
+
 ```
 
-Since the pdf of cos(x), tan(x) and atan(x) have non negative values in the whole domain and were integrating $]-\inf, \inf[$, we can't compute the expected value?
+
+From the simulation, the expected value of tan(x) oscillates. This is probably because tan(x) has a lot of asymptotes and we're sampling asymetrically close to them. Since the normal distribution is also symmetrical, we can concatenate the original sample with its symmetrical, solving the asymetrical sampling problem.
+
+``` {python}
+#import matplotlib.pyplot as plt
+import numpy as np
+import math
+
+sample_size = 1000
+trials = 10000
+
+def get_sample():
+    x = np.random.normal(0, 1, sample_size)
+    # return x with -x
+    return np.concatenate((x, -x))
+
+
+
+def expected_value_trial(func):
+    return sum([func(get_sample()).mean() for _ in range(trials)])/trials
+
+
+transforms = {
+  'tan(x)': lambda x: np.tan(x),
+}
+
+for func_desc, func in transforms.items():
+    print(f"expected value of {func_desc}: {expected_value_trial(func)}")
+
+```
+
+

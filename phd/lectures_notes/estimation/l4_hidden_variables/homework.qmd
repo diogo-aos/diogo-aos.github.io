@@ -1,0 +1,220 @@
+---
+title: Bayesian Inference With Hidden Variables
+subtitle: Work
+author: "Diogo Silva"
+date: "2023-10-22"
+categories: [estimation-classification-course,phd,lecture-notes]
+draft: false
+format:
+  html:
+    code-fold: true
+---
+
+
+
+
+
+# Solution
+
+## Data generation
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# model parameters
+mu_w, sigma_w = 0, 1
+A_y = 0.9
+prob_y = 0.95
+mu_v, sigma_v = 0, 100
+
+params = {
+    'mu_w': mu_w,
+    'sigma_w': sigma_w,
+    'P_y': prob_y,
+    'A_y': A_y,
+    'mu_v': mu_v,
+    'sigma_v': sigma_v,
+    'N': 100,
+    }
+
+# data
+x = np.linspace(0, params['N'], params['N'])
+
+def random_process(x_):
+    z = np.zeros_like(x_)
+    y = np.zeros_like(x_)
+
+    # generate y
+    y[0] = np.random.normal(mu_w, sigma_w, 1)
+    for i in range(1, y.size):
+        w = np.random.normal(mu_w, sigma_w, 1)
+        y[i] = A_y * y[i-1] + w
+
+    y_mask = np.random.randint(0, 100, x_.size) <= int(prob_y*100)
+    v_mask = y_mask == False
+
+    print(f"generated # outliers: {v_mask.sum()}")
+
+    z[y_mask] = y[y_mask]
+    z[v_mask] = np.random.normal(mu_v, sigma_v, size=v_mask.sum())
+
+    return z, v_mask.sum()
+
+z, n_outliers = random_process(x)
+
+plt.plot(x, z)
+plt.title(f'generated data, params=\n{params}\nn_outliers={n_outliers}')
+plt.xlabel('x')
+plt.xlabel('z')
+```
+
+## EM
+
+The model parameters are:
+- $A_y$, is the multiplier of $y_{t-1}$
+- $\mu_w$, the mean of $w$
+- $\sigma_w$, the variance of $w$
+- $P_y$, the probability of using the autoregressive model $y$
+- $\mu_v$
+- $\sigma_v$
+
+```{python}
+import math
+
+# initial conditions
+params_ = params.copy()
+params_['A_y'] = 5
+params_['P_y'] = 0.5
+params_['mu_w'] = z[np.random.randint(0, z.size - 1)]
+params_['sigma_w'] = 1
+params_['mu_v'] = z[np.random.randint(0, z.size - 1)]
+params_['sigma_v'] = 1
+
+#params_ = params
+
+# responsabilties for y
+r = np.zeros_like(x)
+
+```
+
+```{python}
+min_thresh, max_thresh = 1e-100, 1e150
+def threshed(val):
+    return val
+    return max(min_thresh, min(val, max_thresh))
+
+def threshed_dict(d):
+    return {k: threshed(v) for k,v in d.items()}
+
+iters = 10
+r_iters = []
+for it in range(iters):
+    # expectation
+
+    # compute responsabiltiy for y
+    for i in range(1, z.size):
+        
+        term1 = 1 / (2 * math.pi * params_["sigma_w"]**2)**(1/2)
+        term2 = np.exp(-0.5 * (z[i] - params_["A_y"]*z[i-1] - params_["mu_w"])**2 / params_["sigma_w"]**2)
+        prob_model1 = term1 * term2
+
+
+        term1 = 1 / (2 * math.pi * params_["sigma_v"]**2)**(1/2)
+        term2 = np.exp(-0.5 * (z[i] -  params_["mu_v"])**2 / params_["sigma_v"]**2)
+        prob_model2 = term1 * term2
+
+        if prob_model1 == 0:
+            r[i] = 0
+        else:
+            r[i] = params_["P_y"] * prob_model1 / (params_["P_y"] * prob_model1 + (1-params_["P_y"]) * prob_model2)
+
+    
+    # maximization
+    new_params = params_.copy()
+
+    #A_y
+    num, denom = 0, 0
+    for i in range(1, x.size):
+        num += r[i]*(z[i]*z[i-1] - params_["mu_w"] * z[i-1])
+        denom += r[i] * z[i-1]**2
+
+    num = (r[1:] * (z[1:] * z[:-1] - params_["mu_w"] * z[:-1])).sum()
+    denom = (r[1:] * z[:-1]**2).sum()
+    new_params["A_y"] = num / denom
+
+    # mu_w
+    num = 0
+    for i in range(1, x.size):
+        num += r[i] * (z[i] - params_["A_y"] * z[i-1])
+    num = (r[1:] * (z[1:] - params_["A_y"] * z[:-1])).sum()
+    new_params["mu_w"] = num / r[1:].sum()
+
+    # sigma_w
+    num = 0
+    for i in range(i, x.size):
+        num += r[i] * (z[i] - params_["A_y"]*z[i-1] - params_["mu_w"])**2
+    num = (r[1:] * (z[1:] - params_["A_y"]*z[:-1] - params_["mu_w"])**2).sum()
+    new_params["sigma_w"] = (num / r[1:].sum())**(1/2)
+
+    # for the second model, we compute params for a normal gaussian
+    
+    # mu_v
+    num, denom = 0, 0
+    for i in range(1, x.size):
+        num += (1 - r[i])*(z[i] - params_["mu_v"])**2
+    num = ( (1 - r[1:])*z[1:] ).sum()
+    new_params["mu_v"] = num / (1-r[1:]).sum()
+    
+    # sigma_v
+    num = 0
+    for i in range(1, x.size):
+        num += (1 - r[i])*(z[i] - params_["mu_v"])**2
+    num = ( (1 - r[1:])*(z[1:] - params_["mu_v"])**2 ).sum()
+    new_params["sigma_v"] = num / (1-r[1:]).sum()
+
+    # mixture
+    new_params["P_y"] = r[1:].sum() / (z.size -1)
+
+    r_iters.append((params_.copy(), r.copy()))
+
+    params_ = threshed_dict(new_params)
+
+i = -1
+plt.plot(x[1:], r_iters[i][1][1:])
+plt.title("Responsability of model y for sample\n" + "\n".join([f"{key, val}" for key, val in r_iters[i][0].items()]))
+```
+
+
+```{python}
+import os
+for i, (P_, r_) in enumerate(r_iters):
+    plt.figure(figsize=(18,12))
+    plt.plot(x[1:], r_[1:])
+    plt.title(f"Responsability of each sample iter{i}\n" + " ".join([f"{key, val}" for key, val in P_.items()]))
+    plt.savefig(f'plot_gif_{i}.png')
+    plt.close()
+
+from PIL import Image
+import glob
+
+# List the image files
+image_files = sorted(glob.glob('plot_gif_*.png'))
+
+# Create a list to store the image frames
+frames = []
+
+# Load and append each image to the frames list
+for image_file in image_files:
+    img = Image.open(image_file)
+    frames.append(img)
+
+# Save the frames as an animated GIF
+frames[0].save('animation.gif', save_all=True, append_images=frames[1:], duration=2000, loop=0)
+
+for image_file in image_files:
+    os.remove(image_file)
+```
+
+![](animation.gif)

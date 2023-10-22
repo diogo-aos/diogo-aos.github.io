@@ -1,12 +1,5 @@
 [
   {
-    "listing": "/phd.html",
-    "items": [
-      "/phd/lectures_notes/estimation/l2.html",
-      "/phd/lectures_notes/estimation/l1.html"
-    ]
-  },
-  {
     "listing": "/blog.html",
     "items": [
       "/blog/2023-08-sorting-faces/pt2.html",
@@ -16,6 +9,15 @@
       "/blog/elm-elm-ui-and-the-building-of-a-dropdown-part-i/index.html",
       "/blog/bypass-firewalls-and-routers-with-reverse-tunnels/index.html",
       "/blog/how-to-get-unique-values-in-an-elm-list/index.html"
+    ]
+  },
+  {
+    "listing": "/phd.html",
+    "items": [
+      "/phd/lectures_notes/estimation/l1.html",
+      "/phd/lectures_notes/estimation/l2_classic_estimation_pt1/homework_3.html",
+      "/phd/lectures_notes/estimation/l2_classic_estimation_pt1/l2.html",
+      "/phd/lectures_notes/estimation/l4_hidden_variables/homework.html"
     ]
   }
 ]

@@ -1,3 +1,5 @@
 /.quarto/
 /.vscode/
 _freeze/
+.venv/
+/.luarc.json

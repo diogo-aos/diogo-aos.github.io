@@ -1,0 +1,210 @@
+---
+title: Classic Estimation Part I
+subtitle: Work
+author: "Diogo Silva"
+date: "2023-09-223"
+categories: [estimation-classification-course,phd,lecture-notes]
+draft: false
+format:
+  html:
+    code-fold: true
+---
+
+
+
+# Solution
+
+## Data generation
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# data
+var = 1 # noise variance
+parabolas = [
+    (5, 1, 1, 0),
+    (20, 1, 30, 0),
+]
+
+# print parabolas coefs, 3 decimal places when printing numbers
+for i, (a,b,c,shift) in enumerate(parabolas):
+    print(f"parabola {i} coefs: a={a}, b={b}, c={c}, shift={shift}")
+
+
+
+n_parabola_points = 30
+
+
+# Generate some sample data points for a quadratic relationship
+x = np.linspace(-5, 5, n_parabola_points * len(parabolas))
+
+def parabola(x,a,b,c,shift=0):
+    return a*(x-shift)**2 + b*(x-shift) + c
+
+y_true = np.ones_like(x)
+
+step_size = len(parabolas)
+for i, (a,b,c,shift) in enumerate(parabolas):
+    y_true[i::step_size] = parabola(x[i::step_size], a, b, c, shift)# True quadratic equation
+
+# Add some random noise to the data to make it realistic
+noise = np.random.normal(0, var, y_true.size)
+y_data = y_true + noise
+
+
+plt.figure(figsize=(8, 6))
+plt.scatter(x, y_data, label='Sample Data with Noise')
+
+# plot true parabolas
+for i, _ in enumerate(parabolas):
+    plt.plot(x[i::len(parabolas)], y_true[i::len(parabolas)], '-',  label=f'True Parabola {i}')
+
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.title('Original data')
+plt.grid(True)
+plt.show()
+
+```
+
+## Least squares implementation
+
+```{python}
+# compute the least squares of the whole dataset<
+x = x.reshape((x.size,1))
+xx = np.hstack([x**2, x, np.ones_like(x)])
+
+# least squares solution
+# theta = (X^T . X) ^-1 . X^T . y
+coefs = np.linalg.inv(xx.T.dot(xx)).dot(xx.T).dot(y_data)
+a,b,c = coefs
+
+# Predicted values using the linear model
+y_pred = a * x**2 + b * x + c
+
+# residuals
+residuals = y_pred.flatten() - y_data.flatten()
+
+
+plt.figure(figsize=(8, 6))
+plt.scatter(x, y_data, label='Sample Data with Noise')
+
+# plot true parabolas
+for i, _ in enumerate(parabolas):
+    plt.plot(x[i::len(parabolas)], y_true[i::len(parabolas)], '-x',  label=f'True Parabola {i}')
+
+plt.plot(x, y_pred,'r-.', label='Least squares')
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.title('Least Squares on a Parabola')
+plt.grid(True)
+plt.show()
+
+# Print the coefficients of the linear model
+print(f"Estimated coefficients: a = {a}, b = {b}, c = {c}")
+print(f"General SSE = {np.sum(residuals**2):.3e}")
+
+# SSE for each parabola with estimated coefs
+for i, _ in enumerate(parabolas):
+    print(f"Parabola {i} SSE = {np.sum(residuals[i::len(parabolas)]**2):.3e}")
+
+
+
+```
+
+## RANSAC
+
+```{python}
+# ransac
+s = 3 # sample size
+N = 100 # iterations
+thresh = 5 # max distance to model
+
+
+x = x.reshape((x.size,1))
+xx = np.hstack([x**2, x, np.ones_like(x)])
+
+# ransac
+def fit_eval_model_sample(sample: list[int]):
+    coefs = np.linalg.inv(xx[sample]).dot(y_data[sample])
+    a,b,c = coefs
+
+    y_pred = a * x**2 + b * x + c
+    residuals = np.abs(y_pred.flatten() - y_data.flatten())
+    inliners = np.arange(x.size)[residuals < thresh]
+    return coefs, inliners, inliners.size
+    
+
+samples = [sorted(random.sample(range(x.size), s)) for _ in range(N)]
+
+#models = [np.linalg.pinv(xx[sample]).dot(y_data[sample]) for sample in samples]
+fits = [fit_eval_model_sample(sample) for sample in samples]
+fits = sorted(fits, key=lambda x: x[-1])
+_, inliners, _ = fits[-1] # best model
+
+print(f" using {inliners.size} inliners")
+
+# least squares solution
+# theta = (X^T . X) ^-1 . X^T . y
+coefs = np.linalg.inv(xx[inliners].T.dot(xx[inliners])).dot(xx[inliners].T).dot(y_data[inliners])
+a,b,c = coefs
+
+# Predicted values using the linear model
+y_pred = a * x**2 + b * x + c
+
+# residuals
+residuals = y_pred.flatten() - y_data.flatten()
+
+plt.figure(figsize=(8, 6))
+plt.scatter(x, y_data, label='Sample Data with Noise')
+
+# plot true parabolas
+for i, _ in enumerate(parabolas):
+    plt.plot(x[i::len(parabolas)], y_true[i::len(parabolas)], '-x',  label=f'True Parabola {i}')
+
+plt.plot(x, y_pred,'k-.', label='RANSAC Model')
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.title('RANSAC on a Parabola')
+plt.grid(True)
+plt.show()
+
+# Print the coefficients of the linear model
+print(f"Estimated coefficients: a = {a:.2f}, b = {b:.2f}, c = {c:.2f}")
+print(f"SSE = {np.sum(residuals**2):.3e}")
+# SSE for each parabola with estimated coefs
+for i, _ in enumerate(parabolas):
+    print(f"Parabola {i} SSE = {(np.sum(residuals[i::len(parabolas)]**2)):.3e}")
+```
+
+
+```{python}
+# describe ransac's solutions
+n_known_models = 2
+thresh_model_diff_pct = 0.35
+
+model_counts = {}
+for coefs, inliers, count in fits:
+    for coefs_ in model_counts.keys():
+        coefs_ = np.array(coefs_)
+        if (np.abs(coefs - coefs_) / coefs < thresh_model_diff_pct).sum() == coefs.size:
+            coefs = coefs_
+            break # found approximate model
+
+    if tuple(coefs) not in model_counts:
+        model_counts[tuple(coefs)] = 0
+    model_counts[tuple(coefs)] += 1
+
+
+
+
+
+```
