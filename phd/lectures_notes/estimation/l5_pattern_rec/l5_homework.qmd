@@ -32,12 +32,6 @@ The classes are equiprobable.
 
 ## Solution
 
-The MAP classifier assigns, for each sample, the class with highest posterior probability. So, we wish to proceed the following way:
-
-1. Find the decision boundary.
-2. Find the error probability, based on the decision boundary.
-
-### Decision boundary
 
 The decision boundary is defined by the place where the posterior probability of both classes is equal.
 
@@ -52,84 +46,52 @@ $$
 \alpha_1 e^{-\alpha_1 y} = \alpha_2 e^{-\alpha_2 y}
 $$
 
-Solving this w.r.t. $y$, we have the decision boundary at:
+Solving this w.r.t. $y$, we have the decision boundary at threshold $T$:
 
 $$
-\hat{y} = \frac{ln(\frac{\alpha_2}{\alpha_1})}{\alpha_2 - \alpha_1}
+y = \frac{ln(\frac{\alpha_2}{\alpha_1})}{\alpha_2 - \alpha_1} = T
 $$
 
-### Probability of error
-
-For each $y$, we have a misclassification if the assigned class was the one with inferior probability. So, in the problem space $y \in ]0, \infty]$, the total error is the following:
+So, our classifier assigns classes in the following way.
 
 $$
-P_e = \int_0^{\hat{y}} \alpha_2 e^{-\alpha_2 y} dy + \int_{\hat{y}}^{\infty} \alpha_1 e^{-\alpha_1 y} dy
-$$
-
-This is because the MAP would assign class 1 in region $R_1= ]0, \hat{y}]$ and class 2 in the region $R_2=]\hat{y}, \infty[$. So we get misclassifications when we get class 1 in $R_2$ and vice versa.
-Solving the first term, we get:
-
-$$
-P_{e_1} =
-\int_0^{\hat{y}} \alpha_2 e^{-\alpha_2 y} dy =
-- e^{-\alpha_2 \hat{y}} - (-e^{-\alpha_2 0}) =
-- e^{-\alpha_2 \hat{y}} + 1 =
-1 - e^{-\alpha_2 \frac{ln(\frac{\alpha_2}{\alpha_1})}{\alpha_2 - \alpha_1}}
-$$
-
-For the second term, we can't solve it analytically in a closed form because $R_2 \rightarrow \infty$, and leave it as it is to be solved numerically with specific values for $\alpha_1$ and $\alpha_2$.
+\begin{cases}
+    y>T, i=1 \rightarrow \text{decision region } R_1 \\
+    y<T, i=2 \rightarrow \text{decision region } R_2
+\end{cases}
 
 $$
-P_{e_2} =
-\int_{\hat{y}}^{\infty} \alpha_1 e^{-\alpha_1 y} dy
+
+From here, we can compute the confusion matrix $P$:
+
+$$
+P = \begin{bmatrix}
+    p_{11} & p_{12} \\
+    p_{21} & p_{22} \\
+\end{bmatrix} = 
+\begin{bmatrix}
+    P(i=1|y, i=1) & P(i=2|y, i=1) \\
+    P(i=1|y, i=2) & P(i=2|y, i=2) \\
+\end{bmatrix}
 $$
 
-{{< pagebreak >}}
+We'll compute correct classification (main diagonal), and deduce the misclassification probabilities from that, since each row sums to 1. We're assuming $\alpha_i>0$, otherwise we would get negative values in the p.d.f..
 
+$$
+p_{11} = \int_{R_1} p(i=1|y, i=1) dy = \int_{T}^{\infty} \alpha_1 e^{-\alpha_1 y} dy = -e^{-\alpha_1 y}|^{\infty}_{T} = e^{-\alpha_1 T}
+$$
 
-### sympy solution for the $P_{e_2}$
+$$
+p_{22} = \int_{R_2} p(i=2|y, i=2) dy = \int_{0}^{T} \alpha_2 e^{-\alpha_2 y} dy = -e^{-\alpha_2 y}|^{T}_{0} = 1 - e^{-\alpha_2 T}
+$$
 
-```{python}
-from sympy import symbols, Eq, solve, exp, integrate, oo
+Total error probability $P_e$ (note both priors $P_i=0.5$, since we have equiprobable classes), is given by:
 
-# Define the symbols
-alpha_1, alpha_2, y = symbols('alpha_1 alpha_2 y')
+$$
+\begin{cases}
+P_e = 1 - \sum_{i=1}^2 p_{ii} P_i = 1 - 0.5 (e^{-\alpha_1 T} + 1 - e^{-\alpha_2 T})  \\
+T = \frac{ln(\frac{\alpha_2}{\alpha_1})}{\alpha_2 - \alpha_1}
 
-# Define the likelihoods for each class
-L1 = alpha_1 * exp(-alpha_1 * y)
-L2 = alpha_2 * exp(-alpha_2 * y)
-
-# Set up the equation where the two likelihoods are equal
-equation = Eq(L1, L2)
-
-# Solve for y to find the decision boundary y*
-decision_boundary = solve(equation, y)[0]
-
-# Now calculate the error probability for each class
-# For class 1, the error occurs when y > y*, so we integrate L1 from y* to infinity
-error_probability_1 = integrate(L1, (y, decision_boundary, oo))
-
-# For class 2, the error occurs when y < y*, so we integrate L2 from 0 to y*
-error_probability_2 = integrate(L2, (y, 0, decision_boundary))
-
-# The total error probability is the sum of the two error probabilities
-total_error_probability = error_probability_1 + error_probability_2
-
-decision_boundary, error_probability_1, error_probability_2, total_error_probability
-
-```
-
-### Visualize the distributions for different $\alpha$
-```{python}
-import numpy as np
-import matplotlib.pyplot as plt
-a = 1
-x = np.linspace(0,10,100)
-
-
-for a in [1e-2, 1e-1, 1]:
-    y = a * np.exp(-a * x)
-    plt.plot(x, y, label=a)
-    plt.legend()
-```
+\end{cases}
+$$
 
