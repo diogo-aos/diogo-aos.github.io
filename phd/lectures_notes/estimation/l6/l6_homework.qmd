@@ -9,8 +9,8 @@ format:
   html:
     code-fold: true
     embed-resources: true
-  pdf: default
-  latex: default
+#  pdf: default
+#  latex: default
 ---
 
 
@@ -127,7 +127,7 @@ We have 3 observations. This means the final distribution of the hidden variable
 
 - $t=1$
     - At the beginning $t=1$, we have $\pi^1=[0 \quad 1 \quad 0]$, no prediction step is required.
-    - For the update, we have $O_1=1$ and update the distribution probability with $\hat{\pi}^1 = k \, diag(B_{* O_1}) \, \pi^1 = [0 \; 1 \; 0]^T$, where $k= \frac{1}{P(O_1)} = \frac{1}{B_{* O_1}^T \pi^1}$
+    - For the update, we have $O_1=1$ and update the distribution probability with $\hat{\pi}^1 = k \, diag(B_{* O_1}) \, \pi^1 = [0 \; 1 \; 0]^T$, where $k = \frac{1}{P(O_1)} = \frac{1}{B_{* O_1}^T \pi^1}$
 - $t=2$
     - Prediction step, from $t=1$ to $t=2$, updating with equation $\pi^2 = A^T \hat{\pi}^1 = [0.2 \; 0.5 \; 0.3]^T$.
     - Observation step, given $O_2=3$, and reaplying what we had before for $O_2$, we get the result $\hat{\pi}^2 =[0.0 \; 0.45 \; 0.54]^T$
@@ -200,5 +200,102 @@ k = B[:,O].T.dot(Pi)
 Pi = np.diag(B[:,O]).dot(Pi) * (1/k)
 
 print(f"Obs. t={t} Pi={Pi.T}")
+
+```
+
+
+
+
+## c) Determine the most likely state sequence using the Viterbi algorithm. Compare with the output of last alina.
+
+The Viterbi algorithm has a forward pass that, at each time step $t$, for each possible state, keeps track of what would have been the most likely state at $t-1$. Let $V$ be the NxT matrix (N states for T time steps) that stores the probabilities for each state, assuming it transitioned from the best state at the previous time step. Let $S$ be the $NxT$ matrix that keeps track of what was the most likely state in the previous step, so that we may rebuild the most likely path.
+
+- Initialization
+    - $V_{s,1} = B_{s,y_1} \pi_s$
+    - Here we're just doing the update step over the initial state probabilities, based on observation $y_1$.
+    - In matrix form, for computing for all states, we'd have:
+        - $V_{*,1} = diag(B_{*,y_1}) \pi$
+    - $S_{*,1}=0$
+    - At $t=1$, there were no previous likely states before. This column will be ignored at the end.
+
+- Recursion
+    - $$V_{s,t} = \max_\hat{s} V_{\hat{s},t-1} A_{\hat{s},s} B_{s,y_t}$$
+    - $S_{s,t} = arg\max_\hat{s} V_{\hat{s},t-1} A_{\hat{s},s} B_{s,y_t}$
+    - For each time step, for each state, we compute what was the best transition, given observation $y_t$. For each state $s$ at time step $t$, we start from the likelihood of every other state $\hat{s}$ at $t-1$, multiply that by the state transition probability $A_{\hat{s}, s}$ and, finally, by the emission probability for $y_t$ from $s$. In the end, we keep only the maximum, which means we don't run into an exponential growth of possibilities.
+    - Final $V$ and $S$:
+$$
+V = \begin{bmatrix}
+    0.0 & 0.0 & 0.0004 \\
+    0.2 & 0.01 & 0.00672 \\
+    0.0 & 0.012 & 0.0024 \\
+\end{bmatrix}
+$$
+
+$$
+S = \begin{bmatrix}
+    0 & 1 & 2 \\
+    1 & 2 & 3 \\
+    1 & 2 & 2 \\
+\end{bmatrix}
+$$
+
+- Backtrace
+    - At the end, we start by computing the final state $\hat{q}_T$, and use matrix $S$ to backtack from that.
+    - $\hat{q}_T = arg\max_\hat{s} V_{\hat{s}, T}$
+    - $\hat{q}_t = S_{\hat{q}_{t+1}, t+1}, t=1..T-1$
+    - So we have $\hat{q}_3=2, \hat{q}_2=3, \hat{q}_1=2$. Estimated state sequence $(2,3,2)$.
+
+
+```{python}
+
+def viterbi(O: np.array, A: np.array, B: np.array,  Pi: np.array):
+    n_states, obs_cardinality = B.shape
+    n_obs = len(O)
+
+    V = np.zeros((n_states, n_obs))
+    bt = np.zeros((n_states, n_obs), np.uint)
+
+    # init
+    t = 0
+    #V[:,0] = np.diag(Pi).dot(B[:, O[t]].reshape(n_states, 1))
+    V[:,t] = np.diag(B[:, O[t]]).dot(Pi)[:,0]
+    bt[:,0] = 0
+
+    print(V)
+
+    # "recursion"
+    for t in range(1, n_obs):
+        for s in range(n_states):
+            opt_space = np.diag(V[:,t-1])
+            opt_space = opt_space.dot(A[:,s])
+            opt_space = opt_space * B[s,O[t]]
+            print(t, s, opt_space)
+            V[s, t] = opt_space.max()
+            bt[s,t] = np.argmax(opt_space)
+    return V, bt+1
+
+
+
+A = [
+    [0.3, 0.6, 0.1],
+    [0.2, 0.5, 0.3],
+    [0.1, 0.8, 0.1]
+]
+B = [
+    [0.8, 0.2, 0.0], # emission for state 1
+    [0.2, 0.7, 0.1], # emission for state 2
+    [0.0, 0.8, 0.2], # emission for state 3
+]
+Pi = [
+    [0.0],
+    [1.0],
+    [0.0]
+    ]
+O = [1,3,2]
+
+A, Pi, B, O = [np.array(x) for x in (A, Pi, B, O)]
+
+
+viterbi(O-1, A, B, Pi)
 
 ```

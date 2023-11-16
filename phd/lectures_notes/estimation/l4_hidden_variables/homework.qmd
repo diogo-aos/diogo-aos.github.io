@@ -1,13 +1,14 @@
 ---
 title: Bayesian Inference With Hidden Variables
 subtitle: Work
-author: "Diogo Silva"
-date: "2023-10-22"
+author: "Group 9 - Diogo Silva, Saúl Santos"
+#date: "2023-10-22"
 categories: [estimation-classification-course,phd,lecture-notes]
 draft: false
 format:
   html:
     code-fold: true
+  pdf: default
 ---
 
 
@@ -48,6 +49,7 @@ def random_process(x_):
 
     # generate y
     y[0] = np.random.normal(mu_w, sigma_w, 1)
+    #y[0] = 0
     for i in range(1, y.size):
         w = np.random.normal(mu_w, sigma_w, 1)
         y[i] = A_y * y[i-1] + w
@@ -73,12 +75,56 @@ plt.xlabel('z')
 ## EM
 
 The model parameters are:
+
 - $A_y$, is the multiplier of $y_{t-1}$
 - $\mu_w$, the mean of $w$
 - $\sigma_w$, the variance of $w$
 - $P_y$, the probability of using the autoregressive model $y$
 - $\mu_v$
 - $\sigma_v$
+
+In the first step we compute the responsability for each sample $z_i$. Since we have 2 models in the mixture, we can simply compute the responsability $r_{i1}$ for the first (autoregressive model), and the other is simply given by $r_{i2} = 1-r_{i1}$.
+
+$$
+r_{i1} = \frac{1}{\sqrt{2 \pi \sigma_w^2}} e^{-\frac{(z_i - A_y * z_{i-1} - \mu_w)^2}{\sigma_w^2}}
+$$
+
+In the M step, the estimations for the parameters are given by:
+
+$$
+A_y = \frac{\sum_{i=2}^n r_{i1} (z_i z_{i-1} - \mu_w z_{i-1})}{\sum_{i=2}^n r_{i1} z_{i-1}^2}
+$$
+
+$$
+\mu_w = \frac{\sum_{i=2}^n r_{i1} (z_i - A_y z_{i-1})}{\sum_{i=2}^n r_{i1}}
+$$
+
+$$
+\sigma_w = \sqrt{ \frac{\sum_{i=2}^n r_{i1} (z_i - A_y z_{i-1} - \mu_w)^2}{\sum_{i=2}^n r_{i1}}} 
+$$
+
+$$
+\mu_v = \frac{\sum_{i=1}^n r_{i2} z_i}{\sum_{i=1}^n r_{i2}}
+$$
+
+$$
+\sigma_v = \sqrt{ \frac{\sum_{i=1}^n r_{i2} (z_i - \mu_w)^2}{\sum_{i=1}^n r_{i2}}} 
+$$
+
+$$
+P_y = \frac{\sum_{i=2}^n r_{i1}}{n-1}
+$$
+
+We set the initial conditions for the following plot as follows:
+
+- $A_y=5$ 
+- $P_y=0.5$ (uniform distribution)
+- $\mu_w = \text{mean of sample } z_{1...n}$ 
+- $\sigma_w = 1$
+- $\mu_v = \text{mean of sample } z_{1...n}$ 
+- $\sigma_v = 1$
+
+We run the algorithm for 50 iterations.
 
 ```{python}
 import math
@@ -87,9 +133,9 @@ import math
 params_ = params.copy()
 params_['A_y'] = 5
 params_['P_y'] = 0.5
-params_['mu_w'] = z[np.random.randint(0, z.size - 1)]
+params_['mu_w'] = z.mean()
 params_['sigma_w'] = 1
-params_['mu_v'] = z[np.random.randint(0, z.size - 1)]
+params_['mu_v'] = z.mean()
 params_['sigma_v'] = 1
 
 #params_ = params
@@ -108,7 +154,7 @@ def threshed(val):
 def threshed_dict(d):
     return {k: threshed(v) for k,v in d.items()}
 
-iters = 10
+iters = 20
 r_iters = []
 for it in range(iters):
     # expectation
@@ -130,7 +176,8 @@ for it in range(iters):
         else:
             r[i] = params_["P_y"] * prob_model1 / (params_["P_y"] * prob_model1 + (1-params_["P_y"]) * prob_model2)
 
-    
+
+
     # maximization
     new_params = params_.copy()
 
