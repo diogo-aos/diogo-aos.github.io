@@ -1,0 +1,204 @@
+---
+title: L6 - Hidden Markov Models
+subtitle: Problem set
+author: "Group 9 - Diogo Silva, Saúl Santos"
+#date: "2023-10-22"
+categories: [estimation-classification-course,phd,lecture-notes]
+draft: false
+format:
+  html:
+    code-fold: true
+    embed-resources: true
+  pdf: default
+  latex: default
+---
+
+
+# Problem 1
+## a) Compute the asymptotic tate distribution.
+
+Let us consider we have no observations. In this scenario, we wish to know to where does the distribution for probabilities of the states converge to. Without observations to consider, the $\pi_t$ are given by;
+
+$$
+\pi^t = A^T \pi^{t-1}
+$$
+
+And we wish to know the asymptotic state distribution:
+
+$$
+\begin{flalign}
+    \lim_{t->\infty} \pi^{t-1} = \lim_{t->\infty} A^T \pi^{t-1} \\
+    \pi^{\infty} = A^T \pi^{\infty} \\
+    0 = (A^T - I) \pi^{\infty} \\
+\end{flalign}
+$$
+
+From here, we have a system of 3 equations to solve (we could also solve using the null space), to which we add the condition of unitary sum:
+
+$$
+\begin{flalign}
+\begin{cases}
+(a_{11} - 1) \pi_1 + a_{21} \pi_2 + a_{31} \pi_3 = 0 \\
+a_{12} \pi_1 + (a_{22} - 1) \pi_2 + a_{32} \pi_3 = 0 \\
+a_{13} \pi_1 + a_{23} \pi_2 + (a_{33} - 1) * \pi_3 = 0 \\
+\sum_{i=1}^3 \pi_i = 1
+\end{cases} \\
+\begin{cases}
+(a_{11} - 1) \pi_1 + a_{21} \pi_2 + a_{31} \pi_3 = 0 \\
+a_{12} \pi_1 + (a_{22} - 1) \pi_2 + a_{32} \pi_3 = 0 \\
+a_{13} \pi_1 + a_{23} \pi_2 + (a_{33} - 1) * \pi_3 = 0 \\
+\pi_1 + \pi_2 + \pi_3 = 1
+\end{cases} \\
+\begin{cases}
+\pi_1 = 0.20 \\
+\pi_2 = 0.58 \\
+\pi_3 = 0.22 \\
+\end{cases}
+\end{flalign}
+$$
+
+
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+import sympy
+
+pi1, pi2, pi3 = sympy.symbols("pi1 pi2 pi3")
+
+
+
+A = [
+    [0.3, 0.6, 0.1],
+    [0.2, 0.5, 0.3],
+    [0.1, 0.8, 0.1],
+]
+A = sympy.Matrix(A)
+
+I = sympy.Matrix(np.identity(3))
+
+Pi = [
+    [pi1],
+    [pi2],
+    [pi3],
+    ]
+Pi = sympy.Matrix(Pi)
+
+b = sympy.Matrix([[0], [0], [0], [1]])
+AA = sympy.Matrix([A.T - I, [Pi,1,1]])
+
+sympy.solve(AA * Pi - b)
+
+```
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+import math
+
+A = [
+    [0.3, 0.6, 0.1],
+    [0.2, 0.5, 0.3],
+    [0.1, 0.8, 0.1]
+]
+A = np.array(A)
+Pi = [
+    [0.0],
+    [1.0],
+    [0.0]
+    ]
+A, Pi = [np.array(x) for x in (A,Pi)]
+
+iters = 100
+for i in range(iters):
+    nPi = A.T.dot(Pi)
+    print(nPi)
+    if np.allclose(nPi, Pi):
+        break
+    Pi = nPi
+
+```
+
+
+## b) Probabiltiy distribution of hidden variables after given observation sequence
+
+We have 3 observations. This means the final distribution of the hidden variables at each time step $t$ is given by a prediction step and an observation step. We have 3 observations $O=(1,3,2)$. Our plan is as follows:
+
+- $t=1$
+    - At the beginning $t=1$, we have $\pi^1=[0 \quad 1 \quad 0]$, no prediction step is required.
+    - For the update, we have $O_1=1$ and update the distribution probability with $\hat{\pi}^1 = k \, diag(B_{* O_1}) \, \pi^1 = [0 \; 1 \; 0]^T$, where $k= \frac{1}{P(O_1)} = \frac{1}{B_{* O_1}^T \pi^1}$
+- $t=2$
+    - Prediction step, from $t=1$ to $t=2$, updating with equation $\pi^2 = A^T \hat{\pi}^1 = [0.2 \; 0.5 \; 0.3]^T$.
+    - Observation step, given $O_2=3$, and reaplying what we had before for $O_2$, we get the result $\hat{\pi}^2 =[0.0 \; 0.45 \; 0.54]^T$
+- $t=3$
+    - Prediction step, $\pi^3 = A^T \hat{\pi}^2 = [0.15 \; 0.66 \; 0.19]^T$
+    - Observation step, $\hat{\pi}^3 =[0.04 \; 0.72 \; 0.24]^T$
+
+
+
+
+```{python}
+import numpy as np
+
+A = [
+    [0.3, 0.6, 0.1],
+    [0.2, 0.5, 0.3],
+    [0.1, 0.8, 0.1]
+]
+B = [
+    [0.8, 0.2, 0.0], # emission for state 1
+    [0.2, 0.7, 0.1], # emission for state 2
+    [0.0, 0.8, 0.2], # emission for state 3
+]
+Pi = [
+    [0.0],
+    [1.0],
+    [0.0]
+    ]
+A, Pi, B = [np.array(x) for x in (A, Pi, B)]
+
+
+
+#%%
+t = 0
+print(f"t={t} Pi={Pi.T}")
+
+# observation O_1 = 1 (=0 here)
+t = 1
+O = 0
+k = B[:,O].T.dot(Pi)
+Pi = np.diag(B[:,O]).dot(Pi) * (1/k)
+
+print(f"Obs. t={t} Pi={Pi.T}")
+
+
+# t=2
+t = 2
+# predict t=1 to t=2
+Pi = A.T.dot(Pi)
+
+print(f"Pred. t={t} Pi={Pi.T}")
+
+# observe O_2 = 3 (=2 here)
+O = 2
+k = B[:,O].T.dot(Pi)
+Pi = np.diag(B[:,O]).dot(Pi) * (1/k)
+
+print(f"Obs. t={t} Pi={Pi.T}")
+
+# t=2
+t = 3
+# predict t=2 to t=3
+Pi = A.T.dot(Pi)
+
+print(f"Pred. t={t} Pi={Pi.T}")
+
+# observe O_3 = 2 (=1 here)
+O = 1
+k = B[:,O].T.dot(Pi)
+Pi = np.diag(B[:,O]).dot(Pi) * (1/k)
+
+print(f"Obs. t={t} Pi={Pi.T}")
+
+```
